@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -6,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using ProjectManagementSystem.Models;
 using ProjectManagementSystem.Models.AccountViewModels;
 using Microsoft.AspNetCore.Authentication;
+using ProjectManagementSystem.ProjectManagementSystemDatabase.Context;
 
 namespace ProjectManagementSystem.Controllers
 {
@@ -15,13 +18,18 @@ namespace ProjectManagementSystem.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger _logger;
 
+        private readonly ApplicationDbContext _context;
+
         public AccountController(UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,   
-            ILogger<AccountController> logger)
+            ILogger<AccountController> logger,ApplicationDbContext context
+            )
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            _context = context;
+
         }
         
         private void AddErrors(IdentityResult result)
@@ -40,9 +48,17 @@ namespace ProjectManagementSystem.Controllers
             }
             else
             {
-                return RedirectToAction(nameof(HomeController.Index), "Home");
+                return RedirectToAction("Index","Home");
             }
         }
+        
+        public ActionResult Users()
+        {
+            var users = _userManager.Users.ToList();
+          
+            return View(users);  
+        }  
+
         
        [HttpGet]
         [AllowAnonymous]
@@ -60,7 +76,7 @@ namespace ProjectManagementSystem.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { FullName = model.FullName, UserName = model.UserName, Email = model.Email };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -134,8 +150,60 @@ namespace ProjectManagementSystem.Controllers
         {
             await _signInManager.SignOutAsync();
             _logger.LogInformation("User logged out.");
-            return RedirectToAction(nameof(HomeController.Index), "Home");
+            return RedirectToAction("Index","Home");
         }
+        
+        public ActionResult Details(string id)  
+        {  
+            var user = _userManager.FindByIdAsync(id);
+            return View(user.Result);  
+        }  
+
+        
+        [HttpGet]  
+        public ActionResult Edit(string id)
+        {
+            var user = _userManager.FindByIdAsync(id);
+            return View(user.Result);  
+        }  
+   
+        [HttpPost]  
+        public async Task<ActionResult> Edit(ApplicationUser user)
+        {
+            
+            if (ModelState.IsValid)
+            {
+                var oldUser = _userManager.FindByIdAsync(user.Id).Result;
+                
+                oldUser.FullName = user.FullName;
+                oldUser.UserName = user.UserName;
+                oldUser.Email = user.Email;
+                
+                IdentityResult result = await _userManager.UpdateAsync(oldUser);
+                
+
+                return RedirectToAction("Index","Home");
+   
+            }  
+            else  
+            {  
+                return View(user);  
+            }            
+        }  
+   
+        [HttpGet]  
+        public ActionResult Delete(string id)  
+        {  
+            var user=_userManager.FindByIdAsync(id);  
+            return View(user);  
+        }  
+   
+        [HttpPost]  
+        public ActionResult ConfirmDelete(ApplicationUser user)  
+        {  
+           _userManager.DeleteAsync(user);
+           return RedirectToAction("Index","Home");
+        }  
 
     }
 }

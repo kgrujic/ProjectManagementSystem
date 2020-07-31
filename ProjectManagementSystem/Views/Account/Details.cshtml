@@ -1,0 +1,45 @@
+﻿@model ProjectManagementSystem.Models.ApplicationUser
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="card" style="width:60%; margin:auto;">  
+    <div class="card-header bg-dark text-white">  
+        <h5>Employee Details</h5>  
+    </div>  
+    <div class="card-body">  
+        <table class="table table-borderless">  
+            @*<tr>  
+                <td>  
+                    <b>@Html.DisplayNameFor(m => m.FullName)</b>  
+                </td>  
+                <td>@Html.DisplayFor(m => m.UserName)</td>  
+                <td>  
+                    <b>@Html.DisplayNameFor(m => m.Email)</b>  
+                </td>  
+                 
+            </tr>  *@
+            <tr>  
+                <td>  
+                    <b>@Html.DisplayNameFor(m => m.FullName)</b>  
+                </td>  
+                <td>@Html.DisplayFor(m => m.FullName)</td>  
+                <td>  
+                    <b>@Html.DisplayNameFor(m => m.UserName)</b>  
+                </td>  
+                <td>@Html.DisplayFor(m => m.UserName)</td>  
+            </tr>  
+            <tr>  
+                <td>  
+                    <b>@Html.DisplayNameFor(m => m.Email)</b>  
+                </td>  
+                <td>@Html.DisplayFor(m => m.Email)</td>  
+               
+            </tr>  
+        </table>  
+        <p>  
+            @Html.ActionLink("Edit", "Edit", new { id = Model.Id },new {@class="btn btn-info"})
+            @Html.ActionLink("Back to List", "Users","Account",new {@class="btn btn-primary"})
+        </p>  
+    </div>  
+</div>  

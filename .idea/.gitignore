@@ -1,2 +1,4 @@
 # Default ignored files
 /.idea.GeT.ProjectManagementSystem.Web/.idea/workspace.xml
+# Datasource local storage ignored files
+/.idea.GeT.ProjectManagementSystem.Web/.idea/dataSources.local.xml

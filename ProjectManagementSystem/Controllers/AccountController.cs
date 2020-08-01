@@ -36,12 +36,13 @@ namespace ProjectManagementSystem.Controllers
             _signInManager = signInManager;
             _logger = logger;
             _context = context;
-            
+             
 
         }
         
         private void AddErrors(IdentityResult result)
         {
+            
             foreach (var error in result.Errors)
             {
                 ModelState.AddModelError(string.Empty, error.Description);
@@ -184,7 +185,7 @@ namespace ProjectManagementSystem.Controllers
         [HttpGet]  
         public ActionResult Edit(string id)
         {
-            
+
             var vm = new EditViewModel();
             vm.Roles = new List<SelectListItem>
             {
@@ -207,7 +208,7 @@ namespace ProjectManagementSystem.Controllers
         [HttpPost]  
         public async Task<ActionResult> Edit(ApplicationUser user)
         {
-          
+           
             if (ModelState.IsValid)
             {
                 var oldUser = _userManager.FindByIdAsync(user.Id).Result;

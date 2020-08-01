@@ -1,0 +1,30 @@
+﻿@model IEnumerable<ProjectManagementSystem.Models.Project>
+@{
+    ViewData["Title"] = "Users";
+}
+
+<table class="table table-bordered">  
+    <thead>  
+        <tr>  
+            <th>@Html.DisplayNameFor(m => m.ProjectCode)</th>  
+            <th>@Html.DisplayNameFor(m => m.ProjectName)</th>  
+            <th>@Html.DisplayNameFor(m => m.ProjectManager.FullName)</th>
+            <th>Action(s)</th>  
+        </tr>  
+    </thead>  
+    <tbody>  
+        @foreach (var u in Model)  
+        {  
+            <tr>  
+                <td>@u.ProjectCode</td>  
+                <td>@u.ProjectName</td>  
+                <td>@u.ProjectManager.FullName</td>
+                @*<td>  
+                   @Html.ActionLink("Details","Details",new {id=u.Id },new {@class="btn btn-info"})  
+                   @Html.ActionLink("Edit", "Edit", new { id = u.Id }, new { @class = "btn btn-primary" })  
+                   @Html.ActionLink("Delete", "Delete", new { id = u.Id }, new { @class = "btn btn-danger" })  
+                </td>  *@
+            </tr>  
+        }  
+    </tbody>  
+</table>  

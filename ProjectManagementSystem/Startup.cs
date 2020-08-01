@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ProjectManagementSystem.Models;
 using ProjectManagementSystem.ProjectManagementSystemDatabase.Context;
+using ProjectManagementSystem.Repositories;
 
 namespace ProjectManagementSystem
 {
@@ -31,14 +32,16 @@ namespace ProjectManagementSystem
             services.AddControllersWithViews();
             
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")), ServiceLifetime.Singleton);
             
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
             
 
-            
+            services.AddSingleton<IContextFactory, ContextFactory>();
+            services.AddSingleton<IProjectRepository, ProjectRepository>();
+
             
          
         }

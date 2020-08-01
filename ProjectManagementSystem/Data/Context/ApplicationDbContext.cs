@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ProjectManagementSystem.Models;
+using ProjectManagementSystem.Models.ProjectViewModels;
 
 namespace ProjectManagementSystem.ProjectManagementSystemDatabase.Context
 {
@@ -16,8 +17,8 @@ namespace ProjectManagementSystem.ProjectManagementSystemDatabase.Context
         {
         }
 
-        private DbSet<ApplicationUser> Users { get; set; }
-        private DbSet<Project> Projects { get; set; }
+        public DbSet<ApplicationUser> Users { get; set; }
+        public DbSet<Project> Projects { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

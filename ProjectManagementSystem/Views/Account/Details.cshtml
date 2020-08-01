@@ -5,7 +5,7 @@
 
 <div class="card" style="width:60%; margin:auto;">  
     <div class="card-header bg-dark text-white">  
-        <h5>Employee Details</h5>  
+        <h5>User Details</h5>  
     </div>  
     <div class="card-body">  
         <table class="table table-borderless">  
@@ -22,8 +22,10 @@
             <tr>  
                 <td>  
                     <b>@Html.DisplayNameFor(m => m.FullName)</b>  
-                </td>  
-                <td>@Html.DisplayFor(m => m.FullName)</td>  
+                </td>
+            <td>@Html.DisplayFor(m => m.FullName)</td>  
+            </tr>
+            <tr>  
                 <td>  
                     <b>@Html.DisplayNameFor(m => m.UserName)</b>  
                 </td>  
@@ -34,6 +36,13 @@
                     <b>@Html.DisplayNameFor(m => m.Email)</b>  
                 </td>  
                 <td>@Html.DisplayFor(m => m.Email)</td>  
+               
+            </tr> 
+            <tr>  
+                <td>  
+                    <b>@Html.DisplayNameFor(m => m.RoleName)</b>  
+                </td>  
+                <td>@Html.DisplayFor(m => m.RoleName)</td>  
                
             </tr>  
         </table>  

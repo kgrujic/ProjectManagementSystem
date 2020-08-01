@@ -173,14 +173,28 @@ namespace ProjectManagementSystem.Controllers
         [HttpGet]  
         public ActionResult Edit(string id)
         {
-            var user = _userManager.FindByIdAsync(id);
-            return View(user.Result);  
+            var vm = new EditViewModel();
+            vm.Roles = new List<SelectListItem>
+            {
+                new SelectListItem{Text = "Administrator", Value = "Administrator"},
+                new SelectListItem{Text = "ProjectManager", Value = "ProjectManager"},
+                new SelectListItem{Text = "Developer", Value = "Developer"}
+                
+            };
+            
+            var user = _userManager.FindByIdAsync(id).Result;
+            vm.Id = user.Id;
+            vm.FullName = user.FullName;
+            vm.UserName = user.UserName;
+            vm.Email = user.Email;
+            vm.RoleName = user.RoleName;
+            
+            return View(vm);  
         }  
    
         [HttpPost]  
         public async Task<ActionResult> Edit(ApplicationUser user)
         {
-            
             if (ModelState.IsValid)
             {
                 var oldUser = _userManager.FindByIdAsync(user.Id).Result;
@@ -188,8 +202,15 @@ namespace ProjectManagementSystem.Controllers
                 oldUser.FullName = user.FullName;
                 oldUser.UserName = user.UserName;
                 oldUser.Email = user.Email;
+                oldUser.RoleName = user.RoleName;
                 
                 IdentityResult result = await _userManager.UpdateAsync(oldUser);
+
+                if (result.Succeeded)
+                {
+
+                    Console.WriteLine("yes");
+                }
                 
 
                 return RedirectToAction("Index","Home");

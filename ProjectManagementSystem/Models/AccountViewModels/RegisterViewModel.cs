@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ProjectManagementSystem.Models.AccountViewModels
 {
@@ -33,6 +35,8 @@ namespace ProjectManagementSystem.Models.AccountViewModels
         [Required]
         [Display(Name = "Role")]
         public string Role { get; set; }
+        
+        public List<SelectListItem> Roles { set; get; }
         
     }
 }

@@ -11,6 +11,7 @@ namespace ProjectManagementSystem.Models
     {
         public override string UserName { get; set; }
         public string FullName { get; set; }
+        public string RoleName { get; set; }
 
     }
 }

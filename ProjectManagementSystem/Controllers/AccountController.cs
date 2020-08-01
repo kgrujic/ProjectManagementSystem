@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -8,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using ProjectManagementSystem.Models;
 using ProjectManagementSystem.Models.AccountViewModels;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using ProjectManagementSystem.ProjectManagementSystemDatabase.Context;
 
 namespace ProjectManagementSystem.Controllers
@@ -60,12 +62,20 @@ namespace ProjectManagementSystem.Controllers
         }  
 
         
-       [HttpGet]
+        [HttpGet]
         [AllowAnonymous]
         public IActionResult Register(string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
-            return View();
+            var vm = new RegisterViewModel();
+            vm.Roles = new List<SelectListItem>
+            {
+                new SelectListItem{Text = "Administrator", Value = "Administrator"},
+                new SelectListItem{Text = "ProjectManager", Value = "ProjectManager"},
+                new SelectListItem{Text = "Developer", Value = "Developer"}
+                
+            };
+            return View(vm);
         }
  
         [HttpPost]
@@ -76,7 +86,7 @@ namespace ProjectManagementSystem.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { FullName = model.FullName, UserName = model.UserName, Email = model.Email };
+                var user = new ApplicationUser { FullName = model.FullName, UserName = model.UserName, Email = model.Email, RoleName = model.Role};
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -194,14 +204,16 @@ namespace ProjectManagementSystem.Controllers
         [HttpGet]  
         public ActionResult Delete(string id)  
         {  
-            var user=_userManager.FindByIdAsync(id);  
+            var user=_userManager.FindByIdAsync(id).Result;  
             return View(user);  
         }  
    
         [HttpPost]  
-        public ActionResult ConfirmDelete(ApplicationUser user)  
-        {  
-           _userManager.DeleteAsync(user);
+        public ActionResult Delete(ApplicationUser user)
+        {
+            Console.WriteLine("del");
+            var us = _userManager.FindByIdAsync(user.Id).Result;
+           _userManager.DeleteAsync(us);
            return RedirectToAction("Index","Home");
         }  
 

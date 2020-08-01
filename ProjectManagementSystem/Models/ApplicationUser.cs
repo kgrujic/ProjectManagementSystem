@@ -24,6 +24,8 @@ namespace ProjectManagementSystem.Models
         [StringLength(50)]
         [Display(Name = "Role:")]
         public string RoleName { get; set; }
+        
+        public List<Project> Projects { get; set; }
 
     }
 }

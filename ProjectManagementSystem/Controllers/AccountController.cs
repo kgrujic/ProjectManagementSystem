@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -9,8 +10,10 @@ using Microsoft.Extensions.Logging;
 using ProjectManagementSystem.Models;
 using ProjectManagementSystem.Models.AccountViewModels;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ProjectManagementSystem.ProjectManagementSystemDatabase.Context;
+
 
 namespace ProjectManagementSystem.Controllers
 {
@@ -19,6 +22,8 @@ namespace ProjectManagementSystem.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger _logger;
+        
+       
 
         private readonly ApplicationDbContext _context;
 
@@ -31,6 +36,7 @@ namespace ProjectManagementSystem.Controllers
             _signInManager = signInManager;
             _logger = logger;
             _context = context;
+            
 
         }
         
@@ -125,10 +131,14 @@ namespace ProjectManagementSystem.Controllers
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+                var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, lockoutOnFailure: false);
+               
+                
+               // Console.WriteLine(user.FullName);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
+
                     return RedirectToLocal(returnUrl);
                 }
                 if (result.IsLockedOut)
@@ -147,6 +157,7 @@ namespace ProjectManagementSystem.Controllers
             return View(model);
         }
         
+       
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Lockout()
@@ -173,6 +184,7 @@ namespace ProjectManagementSystem.Controllers
         [HttpGet]  
         public ActionResult Edit(string id)
         {
+            
             var vm = new EditViewModel();
             vm.Roles = new List<SelectListItem>
             {
@@ -195,6 +207,7 @@ namespace ProjectManagementSystem.Controllers
         [HttpPost]  
         public async Task<ActionResult> Edit(ApplicationUser user)
         {
+          
             if (ModelState.IsValid)
             {
                 var oldUser = _userManager.FindByIdAsync(user.Id).Result;
@@ -205,15 +218,9 @@ namespace ProjectManagementSystem.Controllers
                 oldUser.RoleName = user.RoleName;
                 
                 IdentityResult result = await _userManager.UpdateAsync(oldUser);
-
-                if (result.Succeeded)
-                {
-
-                    Console.WriteLine("yes");
-                }
                 
 
-                return RedirectToAction("Index","Home");
+                return RedirectToAction("Users");
    
             }  
             else  
@@ -237,6 +244,15 @@ namespace ProjectManagementSystem.Controllers
            _userManager.DeleteAsync(us);
            return RedirectToAction("Index","Home");
         }  
+        
+        private string GetRoleOfLoggedInUser()
+        {
+            var userId = _userManager.GetUserId(User);
+            var usr = _userManager.FindByIdAsync(userId).Result;
+            return usr.RoleName;
+
+        }
+      
 
     }
 }

@@ -17,6 +17,7 @@ namespace ProjectManagementSystem.ProjectManagementSystemDatabase.Context
         }
 
         private DbSet<ApplicationUser> Users { get; set; }
+        private DbSet<Project> Projects { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -27,6 +28,13 @@ namespace ProjectManagementSystem.ProjectManagementSystemDatabase.Context
             builder.Entity<ApplicationUser>()
                 .HasIndex(u => u.UserName)
                 .IsUnique();
+            
+               
+            builder.Entity<Project>()
+                .HasOne(p => p.ProjectManager)
+                .WithMany(b => b.Projects)
+                .HasForeignKey(p => p.ProjectManagerId);
+            
             
             
             

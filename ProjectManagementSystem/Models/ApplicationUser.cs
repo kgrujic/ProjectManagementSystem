@@ -26,6 +26,8 @@ namespace ProjectManagementSystem.Models
         public string RoleName { get; set; }
         
         public List<Project> Projects { get; set; }
+        
+        public List<Task> Tasks { get; set; }
 
     }
 }

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ProjectManagementSystem.Models;
 using ProjectManagementSystem.Models.ProjectViewModels;
+using Task = ProjectManagementSystem.Models.Task;
 
 namespace ProjectManagementSystem.ProjectManagementSystemDatabase.Context
 {
@@ -19,6 +20,7 @@ namespace ProjectManagementSystem.ProjectManagementSystemDatabase.Context
 
         public DbSet<ApplicationUser> Users { get; set; }
         public DbSet<Project> Projects { get; set; }
+        public DbSet<Task> Tasks { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -34,10 +36,17 @@ namespace ProjectManagementSystem.ProjectManagementSystemDatabase.Context
             builder.Entity<Project>()
                 .HasOne(p => p.ProjectManager)
                 .WithMany(b => b.Projects)
-                .HasForeignKey(p => p.ProjectManagerId);
+                .HasForeignKey(p => p.ProjectManagerId); 
             
+            builder.Entity<Task>()
+                .HasOne(p => p.Assignee)
+                .WithMany(b => b.Tasks)
+                .HasForeignKey(p => p.AssigneeId); 
             
-            
+            builder.Entity<Task>()
+                .HasOne(p => p.Project)
+                .WithMany(b => b.Tasks)
+                .HasForeignKey(p => p.ProjectCode);
             
         }
     }

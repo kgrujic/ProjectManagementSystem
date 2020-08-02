@@ -1,4 +1,8 @@
-﻿@model IEnumerable<ProjectManagementSystem.Models.Project>
+﻿@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Identity
+@model IEnumerable<ProjectManagementSystem.Models.Project>
+@inject UserManager<ApplicationUser> UserManager
+@inject IHttpContextAccessor HttpContextAccessor
 @{
     ViewData["Title"] = "Projects";
 }
@@ -19,11 +23,15 @@
                 <td>@p.ProjectCode</td>  
                 <td>@p.ProjectName</td>   
                 <td>@p.ProjectManager.FullName</td> 
-                <td>  
-                   @Html.ActionLink("Details","Details",new {id= p.ProjectCode},new {@class="btn btn-info"})  
-                   @Html.ActionLink("Edit", "Edit", new { id = p.ProjectCode }, new { @class = "btn btn-primary" })
-                    @Html.ActionLink("Delete", "Delete", new { id = p.ProjectCode }, new { @class = "btn btn-danger" })  
-                </td>  
+                @if (UserManager.FindByIdAsync(UserManager.GetUserId(HttpContextAccessor.HttpContext.User)).Result.RoleName == "Administrator")
+                {
+                    <td>  
+                        @Html.ActionLink("Details","Details",new {id= p.ProjectCode},new {@class="btn btn-info"})  
+                        @Html.ActionLink("Edit", "Edit", new { id = p.ProjectCode }, new { @class = "btn btn-primary" })
+                        @Html.ActionLink("Delete", "Delete", new { id = p.ProjectCode }, new { @class = "btn btn-danger" })  
+                    </td>  
+                }
+
             </tr>  
         }  
     </tbody>  

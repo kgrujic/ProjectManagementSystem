@@ -16,6 +16,13 @@ namespace ProjectManagementSystem.Controllers
         private readonly ApplicationDbContext _context;
         private readonly IProjectRepository _repository;
         private readonly IUserHelper _userHelper;
+        
+        enum Role
+        {
+            Administrator,
+            ProjectManager,
+            Developer
+        }
 
         public ProjectController(ApplicationDbContext context, IProjectRepository projectRepository,IUserHelper userHelper )
         {
@@ -54,12 +61,23 @@ namespace ProjectManagementSystem.Controllers
             {  
                 Console.WriteLine(project.ProjectName);
                 
-                var newProj = new Project
+                var newProj = new Project();
+                var loggedInUserRole = _userHelper.GetLoggedInUserRole();
+
+                if (loggedInUserRole == Role.Administrator.ToString())
                 {
-                    ProjectName = project.ProjectName,
-                    ProjectManagerId = project.ProjectManagerId
-                        
-                };
+                    newProj.ProjectName = project.ProjectName;
+                    newProj.ProjectManagerId = project.ProjectManagerId;
+
+                } else if (loggedInUserRole == Role.ProjectManager.ToString())
+                {
+                    var loggedInUser = _userHelper.GetLoggedInUser();
+
+                    newProj.ProjectName = project.ProjectName;
+                    newProj.ProjectManagerId = loggedInUser.Id;
+
+                }
+             
                 
                 _repository.CreateProject(newProj);  
                  
@@ -119,6 +137,7 @@ namespace ProjectManagementSystem.Controllers
    {
        var vm = new ProjectViewModel();
        var projManagers = _userHelper.GetAllProjectManagers().ToList();
+       vm.UserRole = _userHelper.GetLoggedInUserRole();
        vm.ProjectManagers = new List<SelectListItem>();
              
        foreach (var pm in projManagers)

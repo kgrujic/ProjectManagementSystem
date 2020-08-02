@@ -18,6 +18,8 @@ namespace ProjectManagementSystem.Models.ProjectViewModels
         public string ProjectManagerId { get; set; }
         
         public ApplicationUser ProjectManager { get; set; }
+        
+        public string UserRole { get; set; }
         public List<SelectListItem> ProjectManagers { set; get; }
     }
 }

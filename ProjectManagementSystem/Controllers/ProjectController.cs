@@ -34,8 +34,21 @@ namespace ProjectManagementSystem.Controllers
         
         public ActionResult Projects()
         {
+            var projects = new List<Project>();
+            var loggedInUser = _userHelper.GetLoggedInUser();
             
-            var projects = _repository.GetProjects().ToList();
+            if (loggedInUser.RoleName == Role.Administrator.ToString())
+            {
+               projects = _repository.GetProjects().ToList();
+            }
+            else if (loggedInUser.RoleName == Role.ProjectManager.ToString())
+            {
+                projects = _repository.GetProjectsForProjectManager(loggedInUser.Id).ToList();
+            }   
+            else if (loggedInUser.RoleName == Role.Developer.ToString())
+            {
+                projects = _repository.GetProjectsForDeveloper(loggedInUser.Id).ToList();
+            }
             
             return View(projects);  
         } 

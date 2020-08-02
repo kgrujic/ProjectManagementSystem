@@ -9,68 +9,74 @@ namespace ProjectManagementSystem.Repositories
 {
     public class ProjectRepository : IProjectRepository
     {
-         
-        private readonly IContextFactory _contextFactory;
+        
         private readonly ApplicationDbContext _context;
-        public ProjectRepository(IContextFactory contextFactory, ApplicationDbContext context)
+        public ProjectRepository(ApplicationDbContext context)
         {
-            _contextFactory = contextFactory;
             _context = context;
 
         }
         public IEnumerable<Project> GetProjects()
         {
-            using (var context = _contextFactory.CreateContext())
-            {
-                return context.Projects.Include(p => p.ProjectManager).ToList();
-            }
+            return _context.Projects.Include(p => p.ProjectManager).ToList();
             
+            
+            
+                
+        } 
+        public IEnumerable<Project> GetProjectsForProjectManager(string pmId)
+        {
+            return _context.Projects.Include(p => p.ProjectManager).Where(p => p.ProjectManagerId == pmId).ToList();
+                
+        }
+        public IEnumerable<Project> GetProjectsForDeveloper(string devId)
+        {
+            var tasks = _context.Tasks.Where(t => t.AssigneeId == devId);
+            var projects = new List<Project>();
+
+            foreach (var project in _context.Projects)
+            {
+                foreach (var task in tasks)
+                {
+                    if (project.Tasks.Contains(task))
+                    {
+                        projects.Add(project);
+                        continue;
+                    }
+                }
+            }
+
+            return projects;
+
         }
 
         public Project GetProjectById(int id)
         {
-            using (var context = _contextFactory.CreateContext())
-            {
-                return context.Projects.Include(p => p.ProjectManager).FirstOrDefault(p => p.ProjectCode == id);
-            }
-           
+            return _context.Projects.Include(p => p.ProjectManager).FirstOrDefault(p => p.ProjectCode == id);
         }
 
         public void CreateProject(Project project)
         {
-            using (var context = _contextFactory.CreateContext())
-            {
-               
-                context.Projects.Add(project);
-                context.SaveChanges();
-              
-            }
-           
-            
+            _context.Projects.Add(project);
+            _context.SaveChanges();
+
         }
 
         public void UpdateProject(Project project)
         {
-
             _context.Projects.Update(project);
-                _context.SaveChanges();
-            
-          
+            _context.SaveChanges();
         }
 
         public void DeleteProject(int id)
         {
-           
             var project = _context.Projects.FirstOrDefault(p => p.ProjectCode == id);
                 if (project != null)
                 {
-                  
                     _context.Projects.Remove(project);
                     _context.SaveChanges();
                 }
                 
-            
-            
         }
 
        

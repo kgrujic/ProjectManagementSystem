@@ -1,0 +1,46 @@
+@model IEnumerable<ProjectManagementSystem.Models.Task>
+@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+ViewData["Title"] = "Tasks";
+}
+
+<table class="table table-bordered">  
+    <thead>  
+    <tr>  
+        <th>Project Name:</th>  
+        <th>@Html.DisplayNameFor(m => m.Status)</th>  
+        <th>@Html.DisplayNameFor(m => m.Progress)</th>  
+        <th>@Html.DisplayNameFor(m => m.Deadline)</th>  
+        <th>@Html.DisplayNameFor(m => m.Description)</th>
+        <th>Assignee:</th>
+        <th>Action(s)</th>  
+    </tr>  
+    </thead>  
+    <tbody>  
+    @foreach (var t in Model)  
+    {  
+        <tr>  
+            <td>@t.Project.ProjectName</td>  
+            <td>@t.Status</td>   
+            <td>@t.Progress</td> 
+            <td>@t.Deadline</td> 
+            <td>@t.Description</td> 
+            <td>@t.Assignee.FullName</td> 
+            
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = t.ProjectCode }, new { @class = "btn btn-primary" })
+                </td>  
+                @if (UserManager.FindByIdAsync(UserManager.GetUserId(HttpContextAccessor.HttpContext.User)).Result.RoleName == "Administrator")
+                {
+                <td>
+                     @Html.ActionLink("Delete", "Delete", new { id = t.ProjectCode }, new { @class = "btn btn-danger" })
+                </td>
+                }
+
+        </tr>  
+    }  
+    </tbody>  
+</table>  

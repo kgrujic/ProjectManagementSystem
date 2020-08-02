@@ -23,6 +23,13 @@
                 <td>@p.ProjectCode</td>  
                 <td>@p.ProjectName</td>   
                 <td>@p.ProjectManager.FullName</td> 
+                @if (UserManager.FindByIdAsync(UserManager.GetUserId(HttpContextAccessor.HttpContext.User)).Result.RoleName == "Administrator" || UserManager.FindByIdAsync(UserManager.GetUserId(HttpContextAccessor.HttpContext.User)).Result.RoleName == "ProjectManager")
+                {
+                    <td> @Html.ActionLink("Create Task","Create","Task",new { projId = p.ProjectCode },new {@class="btn btn-info"})  </td>
+                }
+                
+                 <td> @Html.ActionLink("Tasks","Tasks","Task",new { prId = p.ProjectCode },new {@class="btn btn-info"})  </td>
+     
                 @if (UserManager.FindByIdAsync(UserManager.GetUserId(HttpContextAccessor.HttpContext.User)).Result.RoleName == "Administrator")
                 {
                     <td>  

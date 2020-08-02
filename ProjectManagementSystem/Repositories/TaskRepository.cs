@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
@@ -17,7 +18,13 @@ namespace ProjectManagementSystem.Repositories
 
         public IEnumerable<Task> GetTasks(int projectId)
         {
-            return _context.Tasks.Include(t => t.Assignee).Include(t => t.Project).Where(t => t.ProjectCode == projectId).ToList();
+            var list = _context.Tasks.Include(t => t.Assignee).Include(t => t.Project).Where(t => t.ProjectCode == projectId).ToList();
+            if (!list.Any())
+            {
+                Console.WriteLine("not empty");
+            }
+
+            return list;
         }  
         
         public IEnumerable<Task> GetTasksForUser(string userId)

@@ -45,6 +45,7 @@ namespace ProjectManagementSystem
             services.AddScoped<IContextFactory, ContextFactory>();
             
             services.AddScoped<IProjectRepository, ProjectRepository>();
+            services.AddScoped<ITaskRepository, TaskRepository>();
             services.AddScoped<IUserHelper, UserHelper>();
             
          

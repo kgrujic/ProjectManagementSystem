@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +10,7 @@ using ProjectManagementSystem.Repositories;
 
 namespace ProjectManagementSystem.Controllers
 {
-    public class TaskController
+    public class TaskController : Controller
     {
         private readonly ITaskRepository _repository;
         private readonly IUserHelper _userHelper;
@@ -44,7 +45,9 @@ namespace ProjectManagementSystem.Controllers
             }
             else if (loggedInUser.RoleName == Role.ProjectManager.ToString())
             {
+                Console.WriteLine(prId + "prid");
                 tasks = _repository.GetTasks(prId).ToList();
+                
             }   
             else if (loggedInUser.RoleName == Role.Developer.ToString())
             {
@@ -63,6 +66,7 @@ namespace ProjectManagementSystem.Controllers
         public ActionResult Create(int projId)
         {
             var vm = CreateTaskViewModel(projId);
+           
             return View(vm);  
         }  
         
@@ -84,12 +88,12 @@ namespace ProjectManagementSystem.Controllers
                 }
 
                 newTask.ProjectCode = task.ProjectCode;
-                
+               
                 _repository.CreateTask(newTask);  
                  
                 return RedirectToAction("Tasks");  
             }  
-            return View();  
+            return View(task);  
         }  
         
         [HttpGet]  
@@ -171,6 +175,8 @@ namespace ProjectManagementSystem.Controllers
                 new SelectListItem{Text = "Finished", Value = Status.Finished.ToString()},
                 
             };
+            
+            Console.WriteLine(projId + "met");
 
             vm.ProjectCode = projId;
 

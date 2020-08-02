@@ -1,4 +1,4 @@
-@model ProjectManagementSystem.Models.Project
+@model ProjectManagementSystem.Models.ProjectViewModels.ProjectViewModel
 @{
 ViewData["Title"] = "Create Project";
 }
@@ -14,12 +14,12 @@ ViewData["Title"] = "Create Project";
                 <input asp-for="ProjectName" class="form-control" />
                 <span asp-validation-for="ProjectName" class="text-danger"></span>
           </div>
-            @*<div class="form-group">
-                <label asp-for="Role"></label>
-                <select asp-for="Role" asp-items="@Model.Roles">
-                    <option>Please select one</option>
-                </select>
-            </div>*@
+            <div class="form-group">
+                           <label>Project Manager:</label>
+                           <select asp-for="ProjectManagerId" asp-items="@Model.ProjectManagers">
+                               <option>Please select one</option>
+                           </select>
+                       </div>
             
             <button type="submit" class="btn btn-default">Register</button>
         </form>

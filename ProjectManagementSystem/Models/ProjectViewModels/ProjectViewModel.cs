@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ProjectManagementSystem.Models.ProjectViewModels
 {
@@ -14,5 +16,8 @@ namespace ProjectManagementSystem.Models.ProjectViewModels
         public string ProjectName { get; set; }
         
         public string ProjectManagerId { get; set; }
+        
+        public ApplicationUser ProjectManager { get; set; }
+        public List<SelectListItem> ProjectManagers { set; get; }
     }
 }

@@ -10,10 +10,12 @@ namespace ProjectManagementSystem.Repositories
     public class ProjectRepository : IProjectRepository
     {
          
-        private IContextFactory _contextFactory;
-        public ProjectRepository(IContextFactory contextFactory)
+        private readonly IContextFactory _contextFactory;
+        private readonly ApplicationDbContext _context;
+        public ProjectRepository(IContextFactory contextFactory, ApplicationDbContext context)
         {
             _contextFactory = contextFactory;
+            _context = context;
 
         }
         public IEnumerable<Project> GetProjects()
@@ -29,7 +31,7 @@ namespace ProjectManagementSystem.Repositories
         {
             using (var context = _contextFactory.CreateContext())
             {
-                return context.Projects.Find(id);
+                return context.Projects.Include(p => p.ProjectManager).FirstOrDefault(p => p.ProjectCode == id);
             }
            
         }
@@ -49,26 +51,25 @@ namespace ProjectManagementSystem.Repositories
 
         public void UpdateProject(Project project)
         {
-            using (var context = _contextFactory.CreateContext())
-            {
-                context.Entry(project).State = EntityState.Modified;
-                context.SaveChanges();
-            }
+
+            _context.Projects.Update(project);
+                _context.SaveChanges();
+            
           
         }
 
         public void DeleteProject(int id)
         {
-            using (var context = _contextFactory.CreateContext())
-            {
-                var project = context.Projects.Find(id);
+           
+            var project = _context.Projects.FirstOrDefault(p => p.ProjectCode == id);
                 if (project != null)
                 {
-                    context.Projects.Remove(project);
-                    context.SaveChanges();
+                  
+                    _context.Projects.Remove(project);
+                    _context.SaveChanges();
                 }
                 
-            }
+            
             
         }
 

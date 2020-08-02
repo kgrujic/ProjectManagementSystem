@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ProjectManagementSystem.Helpers.UserHelper;
 using ProjectManagementSystem.Models;
 using ProjectManagementSystem.ProjectManagementSystemDatabase.Context;
 using ProjectManagementSystem.Repositories;
@@ -32,16 +33,18 @@ namespace ProjectManagementSystem
             services.AddControllersWithViews();
             
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")), ServiceLifetime.Singleton);
+                options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")), ServiceLifetime.Scoped);
             
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
             
 
-            services.AddSingleton<IContextFactory, ContextFactory>();
-            services.AddSingleton<IProjectRepository, ProjectRepository>();
-
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped<IContextFactory, ContextFactory>();
+            
+            services.AddScoped<IProjectRepository, ProjectRepository>();
+            services.AddScoped<IUserHelper, UserHelper>();
             
          
         }

@@ -1,0 +1,32 @@
+﻿@model ProjectManagementSystem.Models.Project
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="card" style="width:60%; margin:auto;">  
+    <div class="card-header bg-dark text-white">  
+        <h5>Project Details</h5>  
+    </div>  
+    <div class="card-body">  
+        <table class="table table-borderless">  
+      
+            <tr>  
+                <td>  
+                    <b>@Html.DisplayNameFor(m => m.ProjectName)</b>  
+                </td>
+            <td>@Html.DisplayFor(m => m.ProjectName)</td>  
+            </tr>
+            <tr>  
+                <td>  
+                    <b>Project Manager:</b>  
+                </td>  
+                <td>@Html.DisplayFor(m => m.ProjectManager.FullName)</td>  
+            </tr>  
+           
+        </table>  
+        <p>  
+            @Html.ActionLink("Edit", "Edit", new { id = Model.ProjectCode },new {@class="btn btn-info"})
+            @Html.ActionLink("Back to List", "Users","Account",new {@class="btn btn-primary"})
+        </p>  
+    </div>  
+</div>  

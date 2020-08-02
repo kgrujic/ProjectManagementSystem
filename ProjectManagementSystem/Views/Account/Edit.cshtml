@@ -41,7 +41,7 @@
             <div class="form-group">
                 <label asp-for="RoleName"></label>
                 <select asp-for="RoleName" asp-items="@Model.Roles" >
-                    <option selected value="bla">@Model.RoleName</option>
+                    <option selected value=@Model.RoleName>@Model.RoleName</option>
                 </select>
             </div>
             <div class="form-group">  

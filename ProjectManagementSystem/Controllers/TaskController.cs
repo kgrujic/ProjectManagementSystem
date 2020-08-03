@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Routing;
 using ProjectManagementSystem.Helpers.UserHelper;
 using ProjectManagementSystem.Models;
 using ProjectManagementSystem.Models.TaskViewModels;
@@ -45,7 +46,6 @@ namespace ProjectManagementSystem.Controllers
             }
             else if (loggedInUser.RoleName == Role.ProjectManager.ToString())
             {
-                Console.WriteLine(prId + "prid");
                 tasks = _repository.GetTasks(prId).ToList();
                 
             }   
@@ -57,11 +57,6 @@ namespace ProjectManagementSystem.Controllers
             return View(tasks);  
         } 
         
-        public ActionResult Details(int id)  
-        {  
-            var task = _repository.GetTaskById(id);  
-            return View(task);  
-        }
         
         public ActionResult Create(int projId)
         {
@@ -76,9 +71,11 @@ namespace ProjectManagementSystem.Controllers
         {  
             if (ModelState.IsValid)  
             {
+               
                 var newTask = new Task();
 
-                newTask.Status = task.Status;
+                newTask.Status = task.Status ?? Status.New.ToString();
+               
                 newTask.Progress = 0;
                 newTask.Deadline = task.Deadline;
                 newTask.Description = task.Description;
@@ -91,7 +88,8 @@ namespace ProjectManagementSystem.Controllers
                
                 _repository.CreateTask(newTask);  
                  
-                return RedirectToAction("Tasks");  
+                 return RedirectToAction( "Tasks", new RouteValueDictionary( 
+                    new { controller = "Task", action = "Tasks", prId = task.ProjectCode } ) );
             }  
             return View(task);  
         }  
@@ -111,8 +109,11 @@ namespace ProjectManagementSystem.Controllers
             vm.Project = new Project();
             vm.Deadline = task.Deadline;
             vm.Description = task.Description;
-            
-            vm.Assignee.FullName = task.Assignee.FullName;
+
+            if (task.Assignee != null)
+            {
+                vm.Assignee.FullName = task.Assignee.FullName;
+            }
             vm.Project.ProjectName = task.Project.ProjectName;
 
             return View(vm);  
@@ -123,14 +124,16 @@ namespace ProjectManagementSystem.Controllers
         {  
             if (ModelState.IsValid)  
             {  
+                
                 var newTask = new Task
                 {
                     TaskID = task.TaskID,Status = task.Status, Progress = task.Progress, Deadline = task.Deadline, Description = task.Description,
                     AssigneeId = task.AssigneeId,ProjectCode =  task.ProjectCode
                         
                 };
-                _repository.UpdateTask(newTask);
-                return RedirectToAction("Tasks");  
+               _repository.UpdateTask(newTask);
+                 return RedirectToAction( "Tasks", new RouteValueDictionary( 
+                    new { controller = "Task", action = "Tasks", prId = task.ProjectCode } ) );
    
             }  
             else  
@@ -142,17 +145,20 @@ namespace ProjectManagementSystem.Controllers
         [HttpGet]  
         public ActionResult Delete(int id)  
         {  
-            var task=_repository.GetTaskById(id);  
+            var task =_repository.GetTaskById(id);  
             return View(task);  
         }  
    
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)  
-        {  
+        public ActionResult DeleteConfirmed(int id)
+        {
+            var pc = _repository.GetTaskById(id).ProjectCode;
             _repository.DeleteTask(id);  
+            
            
-            return RedirectToAction("Projects");  
+            return RedirectToAction( "Tasks", new RouteValueDictionary( 
+                new { controller = "Task", action = "Tasks", prId = pc } ) );
         }  
         
         private TaskViewModel CreateTaskViewModel(int projId)

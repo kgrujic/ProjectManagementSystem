@@ -28,15 +28,19 @@ ViewData["Title"] = "Tasks";
             <td>@t.Progress</td> 
             <td>@t.Deadline</td> 
             <td>@t.Description</td> 
-            <td>@t.Assignee.FullName</td> 
+            @if (t.Assignee != null)
+            {
+                <td>@t.Assignee.FullName</td> 
+            }
+           
             
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = t.ProjectCode }, new { @class = "btn btn-primary" })
+                    @Html.ActionLink("Edit", "Edit", new { id = t.TaskID }, new { @class = "btn btn-primary" })
                 </td>  
                 @if (UserManager.FindByIdAsync(UserManager.GetUserId(HttpContextAccessor.HttpContext.User)).Result.RoleName == "Administrator")
                 {
                 <td>
-                     @Html.ActionLink("Delete", "Delete", new { id = t.ProjectCode }, new { @class = "btn btn-danger" })
+                     @Html.ActionLink("Delete", "Delete", new { id = t.TaskID }, new { @class = "btn btn-danger" })
                 </td>
                 }
 

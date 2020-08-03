@@ -18,23 +18,22 @@ namespace ProjectManagementSystem.Repositories
         }
         public IEnumerable<Project> GetProjects()
         {
-            return _context.Projects.Include(p => p.ProjectManager).ToList();
+            return _context.Projects.Include(p => p.ProjectManager).Include(p => p.Tasks).ToList();
             
-            
-            
-                
         } 
         public IEnumerable<Project> GetProjectsForProjectManager(string pmId)
         {
-            return _context.Projects.Include(p => p.ProjectManager).Where(p => p.ProjectManagerId == pmId).ToList();
+            return _context.Projects.Include(p => p.ProjectManager).Include(p => p.Tasks).Where(p => p.ProjectManagerId == pmId).ToList();
                 
         }
         public IEnumerable<Project> GetProjectsForDeveloper(string devId)
         {
-            var tasks = _context.Tasks.Where(t => t.AssigneeId == devId);
+            var tasks = _context.Tasks.Where(t => t.AssigneeId == devId).ToList();
             var projects = new List<Project>();
 
-            foreach (var project in _context.Projects)
+            var contxProj = _context.Projects.Include(p => p.Tasks).Include(p => p.ProjectManager).ToList();
+
+            foreach (var project in contxProj)
             {
                 foreach (var task in tasks)
                 {
@@ -46,7 +45,7 @@ namespace ProjectManagementSystem.Repositories
                 }
             }
 
-            return projects;
+            return projects.Distinct();
 
         }
 

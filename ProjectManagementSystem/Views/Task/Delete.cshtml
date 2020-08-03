@@ -1,0 +1,31 @@
+﻿@model ProjectManagementSystem.Models.Task
+
+@{  
+    ViewBag.Title = "Delete";  
+}  
+   
+<h3 class="text-center text-uppercase">Delete Task Record</h3>  
+<div class="card" style="width:50%; margin:auto;">  
+    <div class="card-header">  
+        <h3>Are you sure you want to delete this?</h3>  
+    </div>  
+    <div class="card-body">  
+        <div class="row">  
+            <div class="col-md-2">  
+   
+            </div>  
+            <div class="col-md-10">  
+            </div>  
+   
+        </div>  
+        
+        @using (Html.BeginForm())  
+        {  
+            @Html.AntiForgeryToken()  
+            <div class="form-actions no-color">  
+                <input type="submit" value="Delete" class="btn btn-danger" /> |
+                @Html.ActionLink("Back to List", "Tasks", "Task", new{prId = @Model.ProjectCode})
+            </div>  
+        }  
+    </div>  
+</div> 

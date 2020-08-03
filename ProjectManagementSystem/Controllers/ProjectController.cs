@@ -105,7 +105,7 @@ namespace ProjectManagementSystem.Controllers
             var vm = CreateProjectViewModel();
             var project = _repository.GetProjectById(id); 
             
-                vm.ProjectCode = project.ProjectCode;
+               vm.ProjectCode = project.ProjectCode;
                vm.ProjectName = project.ProjectName;
                vm.ProjectManager = new ApplicationUser();
                vm.ProjectManagerId = project.ProjectManagerId;

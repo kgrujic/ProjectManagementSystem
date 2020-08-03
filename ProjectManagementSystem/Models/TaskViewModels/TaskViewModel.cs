@@ -10,10 +10,10 @@ namespace ProjectManagementSystem.Models.TaskViewModels
         [Key]
         public int TaskID { get; set; }
         
-        [Required]
+       
         [StringLength(50)]
         [Display(Name = "Status")]
-        public string Status { get; set; }
+        public string? Status { get; set; }
         
         [Required]
         [Display(Name = "Progress")]
@@ -30,7 +30,7 @@ namespace ProjectManagementSystem.Models.TaskViewModels
         
         public string AssigneeId { get; set; }
         
-        public ApplicationUser Assignee { get; set; }
+        public ApplicationUser? Assignee { get; set; }
         
         public int ProjectCode { get; set; }
         

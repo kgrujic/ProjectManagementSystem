@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json.Serialization;
 
 namespace ProjectManagementSystem.Models.TaskViewModels
 {
@@ -16,7 +17,8 @@ namespace ProjectManagementSystem.Models.TaskViewModels
         public string? Status { get; set; }
         
         [Required]
-        [Display(Name = "Progress")]
+        [Display(Name = "Progress(%)")]
+        [Range(0,100,ErrorMessage = "Value must be between 0 and 100")]
         public int Progress { get; set; }
         
         [Required]

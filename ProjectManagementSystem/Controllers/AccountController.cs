@@ -86,7 +86,6 @@ namespace ProjectManagementSystem.Controllers
             return View(vm);
         }
  
-        // TODO add authorize everywhere
         [HttpPost]
         [Authorize(Roles = "Administrator")]
         [ValidateAntiForgeryToken]

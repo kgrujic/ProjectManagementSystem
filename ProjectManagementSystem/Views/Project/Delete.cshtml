@@ -20,22 +20,16 @@
         </div>  
    
         <dl class="dl-horizontal">  
-            <dt>  
-                @Html.DisplayNameFor(model => model.ProjectName)  
-            </dt>  
-   
-            <dd>  
-                @Html.DisplayFor(model => model.ProjectName)  
-            </dd>  
-   
-            <dt>  
-               Project Manager:
-            </dt>  
-   
-            <dd>  
-                @Html.DisplayFor(model => model.ProjectManager.FullName)  
-            </dd>  
-   
+            <div class="form-group">
+                <label asp-for="ProjectName"></label>
+                <input readonly="readonly"  asp-for="ProjectName" class="form-control" />
+                <span asp-validation-for="ProjectName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                            <label> Project Manager:</label>
+                            <input readonly="readonly"  asp-for="ProjectManager.FullName" class="form-control" />
+            </div>
+            
           
           
         </dl>  

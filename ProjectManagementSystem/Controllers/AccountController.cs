@@ -12,6 +12,7 @@ using ProjectManagementSystem.Models.AccountViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using ProjectManagementSystem.ProjectManagementSystemDatabase.Context;
 
 
@@ -70,7 +71,7 @@ namespace ProjectManagementSystem.Controllers
 
         
         [HttpGet]
-        [AllowAnonymous]
+        [Authorize(Roles = "Administrator")]
         public IActionResult Register(string? returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
@@ -85,8 +86,9 @@ namespace ProjectManagementSystem.Controllers
             return View(vm);
         }
  
+        // TODO add authorize everywhere
         [HttpPost]
-        [AllowAnonymous]
+        [Authorize(Roles = "Administrator")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model, string? returnUrl = null)
         {
@@ -100,9 +102,9 @@ namespace ProjectManagementSystem.Controllers
                     _logger.LogInformation("User created a new account with password.");
                     await _userManager.AddToRoleAsync(user,  model.Role);
                     
-                    await _signInManager.SignInAsync(user, isPersistent: false);
+                   // await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation("User created a new account with password.");
-                    return RedirectToLocal(returnUrl);
+                    return RedirectToAction("Users");
                 }
                 AddErrors(result);
             }
@@ -182,7 +184,8 @@ namespace ProjectManagementSystem.Controllers
         }  
 
         
-        [HttpGet]  
+        [HttpGet] 
+        [Authorize(Roles = "Administrator")]
         public ActionResult Edit(string id)
         {
 
@@ -205,14 +208,15 @@ namespace ProjectManagementSystem.Controllers
             return View(vm);  
         }  
    
-        [HttpPost]  
-        public async Task<ActionResult> Edit(ApplicationUser user)
+        [HttpPost]
+        [Authorize(Roles = "Administrator")]
+        public async Task<ActionResult> Edit(EditViewModel user)
         {
            
             if (ModelState.IsValid)
             {
                 var oldUser = _userManager.FindByIdAsync(user.Id).Result;
-                
+                oldUser.Id = user.Id;
                 oldUser.FullName = user.FullName;
                 oldUser.UserName = user.UserName;
                 oldUser.Email = user.Email;
@@ -220,7 +224,12 @@ namespace ProjectManagementSystem.Controllers
                 
                 IdentityResult result = await _userManager.UpdateAsync(oldUser);
                 
-
+                var oldRoleId = _context.UserRoles.FirstOrDefault(r => r.UserId == user.Id)?.RoleId;
+                var oldRole = _context.Roles.FirstOrDefault(r => r.Id == oldRoleId)?.Name;
+                
+                await _userManager.RemoveFromRoleAsync(oldUser, oldRole);
+                await _userManager.AddToRoleAsync(oldUser, user.RoleName);
+                
                 return RedirectToAction("Users");
    
             }  
@@ -231,18 +240,24 @@ namespace ProjectManagementSystem.Controllers
         }  
    
         [HttpGet]  
+        [Authorize(Roles = "Administrator")]
         public ActionResult Delete(string id)  
         {  
             var user=_userManager.FindByIdAsync(id).Result;  
             return View(user);  
         }  
    
-        [HttpPost]  
+        [HttpPost] 
+        [Authorize(Roles = "Administrator")]
         public ActionResult Delete(ApplicationUser user)
         {
-            Console.WriteLine("del");
+          
             var us = _userManager.FindByIdAsync(user.Id).Result;
+            var oldRoleId = _context.UserRoles.FirstOrDefault(r => r.UserId == us.Id)?.RoleId;
+            var oldRole = _context.Roles.FirstOrDefault(r => r.Id == oldRoleId)?.Name;
+            
            _userManager.DeleteAsync(us);
+           _userManager.RemoveFromRoleAsync(user, oldRole);
            return RedirectToAction("Index","Home");
         }  
         

@@ -10,23 +10,21 @@
     <div class="card-body">  
         <table class="table table-borderless">  
       
-            <tr>  
-                <td>  
-                    <b>@Html.DisplayNameFor(m => m.ProjectName)</b>  
-                </td>
-            <td>@Html.DisplayFor(m => m.ProjectName)</td>  
-            </tr>
-            <tr>  
-                <td>  
-                    <b>Project Manager:</b>  
-                </td>  
-                <td>@Html.DisplayFor(m => m.ProjectManager.FullName)</td>  
-            </tr>  
+               <div class="form-group">
+                          <label asp-for="ProjectName"></label>
+                          <input readonly="readonly"  asp-for="ProjectName" class="form-control" />
+                          <span asp-validation-for="ProjectName" class="text-danger"></span>
+                      </div>
+                      <div class="form-group">
+                                      <label> Project Manager:</label>
+                                      <input readonly="readonly"  asp-for="ProjectManager.FullName" class="form-control" />
+                      </div>
+                      
            
         </table>  
         <p>  
             @Html.ActionLink("Edit", "Edit", new { id = Model.ProjectCode },new {@class="btn btn-info"})
-            @Html.ActionLink("Back to List", "Users","Account",new {@class="btn btn-primary"})
+            @Html.ActionLink("Back to List", "Projects","Project",new {@class="btn btn-primary"})
         </p>  
     </div>  
 </div>  

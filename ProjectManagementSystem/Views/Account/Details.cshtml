@@ -9,42 +9,28 @@
     </div>  
     <div class="card-body">  
         <table class="table table-borderless">  
-            @*<tr>  
-                <td>  
-                    <b>@Html.DisplayNameFor(m => m.FullName)</b>  
-                </td>  
-                <td>@Html.DisplayFor(m => m.UserName)</td>  
-                <td>  
-                    <b>@Html.DisplayNameFor(m => m.Email)</b>  
-                </td>  
-                 
-            </tr>  *@
-            <tr>  
-                <td>  
-                    <b>@Html.DisplayNameFor(m => m.FullName)</b>  
-                </td>
-            <td>@Html.DisplayFor(m => m.FullName)</td>  
-            </tr>
-            <tr>  
-                <td>  
-                    <b>@Html.DisplayNameFor(m => m.UserName)</b>  
-                </td>  
-                <td>@Html.DisplayFor(m => m.UserName)</td>  
-            </tr>  
-            <tr>  
-                <td>  
-                    <b>@Html.DisplayNameFor(m => m.Email)</b>  
-                </td>  
-                <td>@Html.DisplayFor(m => m.Email)</td>  
-               
-            </tr> 
-            <tr>  
-                <td>  
-                    <b>@Html.DisplayNameFor(m => m.RoleName)</b>  
-                </td>  
-                <td>@Html.DisplayFor(m => m.RoleName)</td>  
-               
-            </tr>  
+          
+          <div class="form-group">
+                        <label asp-for="FullName"></label>
+                        <input readonly="readonly"  asp-for="FullName" class="form-control" />
+                        <span asp-validation-for="FullName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="UserName"></label>
+                        <input readonly="readonly"  asp-for="UserName" class="form-control" />
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Email"></label>
+                        <input readonly="readonly"  asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                            <label asp-for="RoleName"></label>
+                        <input readonly="readonly" asp-for="RoleName" class="form-control"/>
+                        <span asp-validation-for="RoleName" class="text-danger"></span>
+                        </div>
+                    
         </table>  
         <p>  
             @Html.ActionLink("Edit", "Edit", new { id = Model.Id },new {@class="btn btn-info"})

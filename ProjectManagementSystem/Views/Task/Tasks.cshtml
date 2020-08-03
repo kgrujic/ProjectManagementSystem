@@ -6,7 +6,8 @@
 @{
 ViewData["Title"] = "Tasks";
 }
-
+@Html.ActionLink("Back to Projects", "Projects","Project",new {@class="btn btn-primary"})
+<h3>Tasks for project @Model.FirstOrDefault()?.Project.ProjectName</h3>  
 <table class="table table-bordered">  
     <thead>  
     <tr>  
@@ -16,7 +17,6 @@ ViewData["Title"] = "Tasks";
         <th>@Html.DisplayNameFor(m => m.Deadline)</th>  
         <th>@Html.DisplayNameFor(m => m.Description)</th>
         <th>Assignee:</th>
-        <th>Action(s)</th>  
     </tr>  
     </thead>  
     <tbody>  
@@ -25,7 +25,7 @@ ViewData["Title"] = "Tasks";
         <tr>  
             <td>@t.Project.ProjectName</td>  
             <td>@t.Status</td>   
-            <td>@t.Progress</td> 
+            <td>@t.Progress %</td> 
             <td>@t.Deadline</td> 
             <td>@t.Description</td> 
             @if (t.Assignee != null)

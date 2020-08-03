@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Routing;
@@ -35,6 +36,7 @@ namespace ProjectManagementSystem.Controllers
             _userHelper = userHelper;
         }
         
+        [Authorize(Roles = "Administrator, ProjectManager, Developer")]
         public ActionResult Tasks(int prId)
         {
             var tasks = new List<Task>();
@@ -57,7 +59,7 @@ namespace ProjectManagementSystem.Controllers
             return View(tasks);  
         } 
         
-        
+        [Authorize(Roles = "Administrator, ProjectManager")]
         public ActionResult Create(int projId)
         {
             var vm = CreateTaskViewModel(projId);
@@ -65,6 +67,7 @@ namespace ProjectManagementSystem.Controllers
             return View(vm);  
         }  
         
+        [Authorize(Roles = "Administrator, ProjectManager")]
         [HttpPost]  
         [ValidateAntiForgeryToken]  
         public ActionResult Create(TaskViewModel task)  
@@ -94,6 +97,7 @@ namespace ProjectManagementSystem.Controllers
             return View(task);  
         }  
         
+        [Authorize(Roles = "Administrator, ProjectManager, Developer")]
         [HttpGet]  
         public ActionResult Edit(int id)
         {
@@ -118,7 +122,8 @@ namespace ProjectManagementSystem.Controllers
 
             return View(vm);  
         }  
-   
+        
+        [Authorize(Roles = "Administrator, ProjectManager, Developer")]
         [HttpPost]  
         public ActionResult Edit(TaskViewModel task)  
         {  
@@ -142,13 +147,15 @@ namespace ProjectManagementSystem.Controllers
             }            
         }  
         
+        [Authorize(Roles = "Administrator")]
         [HttpGet]  
         public ActionResult Delete(int id)  
         {  
             var task =_repository.GetTaskById(id);  
             return View(task);  
         }  
-   
+        
+        [Authorize(Roles = "Administrator")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
@@ -182,8 +189,7 @@ namespace ProjectManagementSystem.Controllers
                 
             };
             
-            Console.WriteLine(projId + "met");
-
+            
             vm.ProjectCode = projId;
 
             return vm;

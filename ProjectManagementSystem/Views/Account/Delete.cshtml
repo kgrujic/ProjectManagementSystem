@@ -20,39 +20,28 @@
         </div>  
    
         <dl class="dl-horizontal">  
-            <dt>  
-                @Html.DisplayNameFor(model => model.FullName)  
-            </dt>  
-   
-            <dd>  
-                @Html.DisplayFor(model => model.FullName)  
-            </dd>  
-   
-            <dt>  
-                @Html.DisplayNameFor(model => model.UserName)  
-            </dt>  
-   
-            <dd>  
-                @Html.DisplayFor(model => model.UserName)  
-            </dd>  
-   
-            <dt>  
-                @Html.DisplayNameFor(model => model.Email)  
-            </dt>  
-   
-            <dd>  
-                @Html.DisplayFor(model => model.Email)  
-            </dd>   
-            <dt>  
-                @Html.DisplayNameFor(model => model.RoleName)  
-            </dt>  
-   
-            <dd>  
-                @Html.DisplayFor(model => model.RoleName)  
-            </dd>  
-   
-          
-        </dl>  
+            <div class="form-group">
+                <label asp-for="FullName"></label>
+                <input readonly="readonly"  asp-for="FullName" class="form-control" />
+                <span asp-validation-for="FullName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserName"></label>
+                <input readonly="readonly"  asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email"></label>
+                <input readonly="readonly"  asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                    <label asp-for="RoleName"></label>
+                <input readonly="readonly" asp-for="RoleName" class="form-control"/>
+                <span asp-validation-for="RoleName" class="text-danger"></span>
+                </div>
+            
+        
         @using (Html.BeginForm())  
         {  
             @Html.AntiForgeryToken()  
@@ -60,6 +49,7 @@
                 <input type="submit" value="Delete" class="btn btn-danger" /> |  
                 @Html.ActionLink("Back to List", "Users")  
             </div>  
-        }  
+        }
+        </dl>
     </div>  
 </div> 

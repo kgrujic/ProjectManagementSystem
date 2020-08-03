@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ProjectManagementSystem.Helpers.UserHelper;
@@ -32,6 +33,7 @@ namespace ProjectManagementSystem.Controllers
 
         }
         
+        [Authorize(Roles = "Administrator, ProjectManager, Developer")]
         public ActionResult Projects()
         {
             var projects = new List<Project>();
@@ -59,13 +61,15 @@ namespace ProjectManagementSystem.Controllers
             return View(project);  
         }
 
-
+        
+        [Authorize(Roles = "Administrator, ProjectManager")]
         public ActionResult Create()
         {
             var vm = CreateProjectViewModel();
             return View(vm);  
         }  
-   
+        
+        [Authorize(Roles = "Administrator, ProjectManager")]
         [HttpPost]  
         [ValidateAntiForgeryToken]  
         public ActionResult Create(ProjectViewModel project)  
@@ -99,6 +103,7 @@ namespace ProjectManagementSystem.Controllers
             return View();  
         }  
    
+        [Authorize(Roles = "Administrator")]
         [HttpGet]  
         public ActionResult Edit(int id)
         {
@@ -113,7 +118,8 @@ namespace ProjectManagementSystem.Controllers
 
            return View(vm);  
         }  
-   
+            
+        [Authorize(Roles = "Administrator")]
         [HttpPost]  
         public ActionResult Edit(ProjectViewModel project)  
         {  
@@ -129,7 +135,8 @@ namespace ProjectManagementSystem.Controllers
                 return View(project);  
             }            
         }  
-   
+        
+        [Authorize(Roles = "Administrator")]
         [HttpGet]  
         public ActionResult Delete(int id)  
         {  

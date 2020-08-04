@@ -1,3 +1,8 @@
+@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Identity
+@using ProjectManagementSystem.Models.ProjectViewModels
+@inject UserManager<ApplicationUser> UserManager
+@inject IHttpContextAccessor HttpContextAccessor
 @model ProjectManagementSystem.Models.ProjectViewModels.ProjectViewModel
 
 @{
@@ -14,11 +19,11 @@ ViewData["Title"] = "Create Project";
                 <input asp-for="ProjectName" class="form-control" />
                 <span asp-validation-for="ProjectName" class="text-danger"></span>
             </div>
-            @if (@Model.UserRole == "Administrator")
+        @if (UserManager.FindByIdAsync(UserManager.GetUserId(HttpContextAccessor.HttpContext.User)).Result.RoleName == "Administrator")
             {
                 <div class="form-group">
                     <label>Project Manager:</label>
-                    <select asp-for="ProjectManagerId" asp-items="@Model.ProjectManagers">
+                    <select asp-for="ProjectManagerId" asp-items="@ProjectViewModel.ProjectManagers">
                         <option>Please select one</option>
                     </select>
                 </div>

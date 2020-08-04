@@ -1,22 +1,24 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ProjectManagementSystem.Helpers.UserHelper;
 using ProjectManagementSystem.Models;
 using ProjectManagementSystem.Models.ProjectViewModels;
-using ProjectManagementSystem.ProjectManagementSystemDatabase.Context;
 using ProjectManagementSystem.Repositories;
 
 namespace ProjectManagementSystem.Controllers
 {
     public class ProjectController : Controller
     {
-        private readonly ApplicationDbContext _context;
+      
         private readonly IProjectRepository _repository;
         private readonly IUserHelper _userHelper;
+        
+        private readonly IMapper _mapper;
         
         enum Role
         {
@@ -25,11 +27,14 @@ namespace ProjectManagementSystem.Controllers
             Developer
         }
 
-        public ProjectController(ApplicationDbContext context, IProjectRepository projectRepository,IUserHelper userHelper )
+        public ProjectController(IProjectRepository projectRepository,IUserHelper userHelper, IMapper mapper )
         {
-            _context = context;
+            
             _repository = projectRepository;
             _userHelper = userHelper;
+            _mapper = mapper;
+            
+            AddProjManagersToProjectViewModel();
 
         }
         
@@ -37,17 +42,20 @@ namespace ProjectManagementSystem.Controllers
         public ActionResult Projects()
         {
             var projects = new List<Project>();
-            var loggedInUser = _userHelper.GetLoggedInUser();
             
-            if (loggedInUser.RoleName == Role.Administrator.ToString())
+            var loggedInUser = _userHelper.GetLoggedInUser();
+
+            var loggedInURoleName = _userHelper.GetLoggedInUserRole();
+            
+            if (loggedInURoleName == Role.Administrator.ToString())
             {
-               projects = _repository.GetProjects().ToList();
+               projects = _repository.GetAllProjects().ToList();
             }
-            else if (loggedInUser.RoleName == Role.ProjectManager.ToString())
+            else if (loggedInURoleName == Role.ProjectManager.ToString())
             {
                 projects = _repository.GetProjectsForProjectManager(loggedInUser.Id).ToList();
             }   
-            else if (loggedInUser.RoleName == Role.Developer.ToString())
+            else if (loggedInURoleName == Role.Developer.ToString())
             {
                 projects = _repository.GetProjectsForDeveloper(loggedInUser.Id).ToList();
             }
@@ -65,8 +73,9 @@ namespace ProjectManagementSystem.Controllers
         [Authorize(Roles = "Administrator, ProjectManager")]
         public ActionResult Create()
         {
-            var vm = CreateProjectViewModel();
-            return View(vm);  
+            var projectViewModel = new ProjectViewModel();
+          
+            return View(projectViewModel);  
         }  
         
         [Authorize(Roles = "Administrator, ProjectManager")]
@@ -107,16 +116,12 @@ namespace ProjectManagementSystem.Controllers
         [HttpGet]  
         public ActionResult Edit(int id)
         {
-            var vm = CreateProjectViewModel();
-            var project = _repository.GetProjectById(id); 
             
-               vm.ProjectCode = project.ProjectCode;
-               vm.ProjectName = project.ProjectName;
-               vm.ProjectManager = new ApplicationUser();
-               vm.ProjectManagerId = project.ProjectManagerId;
-               vm.ProjectManager.FullName = project.ProjectManager.FullName;
+            var project = _repository.GetProjectById(id);
 
-           return View(vm);  
+            var projectViewModel = _mapper.Map<ProjectViewModel>(project);
+            
+           return View(projectViewModel);  
         }  
             
         [Authorize(Roles = "Administrator")]
@@ -124,9 +129,11 @@ namespace ProjectManagementSystem.Controllers
         public ActionResult Edit(ProjectViewModel project)  
         {  
             if (ModelState.IsValid)  
-            {  
-                var newPr = new Project{ProjectCode = project.ProjectCode,ProjectName = project.ProjectName, ProjectManagerId = project.ProjectManagerId};
-                _repository.UpdateProject(newPr);
+            {
+                var newProject = _mapper.Map<Project>(project);
+                
+                _repository.UpdateProject(newProject);
+                
                 return RedirectToAction("Projects");  
    
             }  
@@ -153,21 +160,21 @@ namespace ProjectManagementSystem.Controllers
             return RedirectToAction("Projects");  
         }  
    
-   private ProjectViewModel CreateProjectViewModel()
-   {
-       var vm = new ProjectViewModel();
-       var projManagers = _userHelper.GetAllProjectManagers().ToList();
-       vm.UserRole = _userHelper.GetLoggedInUserRole();
-       vm.ProjectManagers = new List<SelectListItem>();
-             
-       foreach (var pm in projManagers)
+       private void AddProjManagersToProjectViewModel()
        {
-           vm.ProjectManagers.Add(new SelectListItem(text: pm.FullName, value: pm.Id));
-                
-       }
 
-       return vm;
-   }
+           var projectManagers = _userHelper.GetAllProjectManagers().ToList();
+
+           ProjectViewModel.ProjectManagers = new List<SelectListItem>();
+                 
+           foreach (var pm in projectManagers)
+           {
+               ProjectViewModel.ProjectManagers.Add(new SelectListItem(text: pm.FullName, value: pm.Id));
+                    
+           }
+
+           
+       } 
     }  
        
     

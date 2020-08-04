@@ -1,4 +1,5 @@
-﻿@model ProjectManagementSystem.Models.AccountViewModels.EditViewModel
+﻿@using ProjectManagementSystem.Models.AccountViewModels
+@model ProjectManagementSystem.Models.AccountViewModels.EditViewModel
 @{  
     ViewBag.Title = "Edit";  
 }  
@@ -37,7 +38,7 @@
            
             <div class="form-group">
                 <label asp-for="RoleName"></label>
-                <select asp-for="RoleName" asp-items="@Model.Roles" >
+                <select asp-for="RoleName" asp-items="@EditViewModel.Roles" >
                     <option selected value=@Model.RoleName>@Model.RoleName</option>
                 </select>
             </div>

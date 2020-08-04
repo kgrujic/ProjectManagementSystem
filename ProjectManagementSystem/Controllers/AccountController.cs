@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -24,20 +25,22 @@ namespace ProjectManagementSystem.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger _logger;
         
-       
-
         private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
+        
+  
 
         public AccountController(UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,   
-            ILogger<AccountController> logger,ApplicationDbContext context
+            ILogger<AccountController> logger,ApplicationDbContext context, IMapper mapper
             )
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _context = context;
-             
+            _mapper = mapper;
+
 
         }
         
@@ -76,6 +79,7 @@ namespace ProjectManagementSystem.Controllers
         {
             ViewData["ReturnUrl"] = returnUrl;
             var vm = new RegisterViewModel();
+            
             vm.Roles = new List<SelectListItem>
             {
                 new SelectListItem{Text = "Administrator", Value = "Administrator"},
@@ -94,7 +98,8 @@ namespace ProjectManagementSystem.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { FullName = model.FullName, UserName = model.UserName, Email = model.Email, RoleName = model.Role};
+
+                ApplicationUser user = _mapper.Map<ApplicationUser>(model);
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -178,8 +183,8 @@ namespace ProjectManagementSystem.Controllers
         
         public ActionResult Details(string id)  
         {  
-            var user = _userManager.FindByIdAsync(id);
-            return View(user.Result);  
+            var user = _userManager.FindByIdAsync(id).Result;
+            return View(user);  
         }  
 
         
@@ -187,9 +192,12 @@ namespace ProjectManagementSystem.Controllers
         [Authorize(Roles = "Administrator")]
         public ActionResult Edit(string id)
         {
+            var user = _userManager.FindByIdAsync(id).Result;
+          
 
-            var vm = new EditViewModel();
-            vm.Roles = new List<SelectListItem>
+            EditViewModel editViewModel = _mapper.Map<EditViewModel>(user);
+            
+            EditViewModel.Roles = new List<SelectListItem>
             {
                 new SelectListItem{Text = "Administrator", Value = "Administrator"},
                 new SelectListItem{Text = "ProjectManager", Value = "ProjectManager"},
@@ -197,21 +205,13 @@ namespace ProjectManagementSystem.Controllers
                 
             };
             
-            var user = _userManager.FindByIdAsync(id).Result;
-            vm.Id = user.Id;
-            vm.FullName = user.FullName;
-            vm.UserName = user.UserName;
-            vm.Email = user.Email;
-            vm.RoleName = user.RoleName;
-            
-            return View(vm);  
+            return View(editViewModel);  
         }  
    
         [HttpPost]
         [Authorize(Roles = "Administrator")]
         public async Task<ActionResult> Edit(EditViewModel user)
         {
-           
             if (ModelState.IsValid)
             {
                 var oldUser = _userManager.FindByIdAsync(user.Id).Result;
@@ -260,13 +260,7 @@ namespace ProjectManagementSystem.Controllers
            return RedirectToAction("Index","Home");
         }  
         
-        private string GetRoleOfLoggedInUser()
-        {
-            var userId = _userManager.GetUserId(User);
-            var usr = _userManager.FindByIdAsync(userId).Result;
-            return usr.RoleName;
-
-        }
+      
       
 
     }

@@ -29,12 +29,12 @@ namespace ProjectManagementSystem.Repositories
         
         public IEnumerable<Task> GetTasksForUser(string userId)
         {
-            return _context.Tasks.Include(t => t.Assignee).Include(t => t.Assignee).Include(t => t.Project).Where(t => t.AssigneeId == userId || t.AssigneeId == null).ToList();
+            return _context.Tasks.Include(t => t.Assignee).Include(t => t.Project).Where(t => t.AssigneeId == userId || t.AssigneeId == null).ToList();
         }
 
         public Task GetTaskById(int id)
         {
-            return _context.Tasks.Include(t => t.Assignee).Include(t => t.Assignee).Include(t => t.Project).FirstOrDefault(t => t.TaskID == id);
+            return _context.Tasks.Include(t => t.Assignee).Include(t => t.Project).FirstOrDefault(t => t.TaskID == id);
         }
 
         public void CreateTask(Task task)

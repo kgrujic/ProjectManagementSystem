@@ -46,8 +46,9 @@ namespace ProjectManagementSystem.Helpers.UserHelper
         public IEnumerable<ApplicationUser> GetAllProjectManagers()
         {
           
-                return _context.Users.Where(u => u.RoleName.Equals(Role.ProjectManager.ToString()));
             
+                return  _context.Users.Where(u => u.RoleName.Equals(Role.ProjectManager.ToString()));;
+
         }
 
         public IEnumerable<ApplicationUser> GetAllDevelopers()

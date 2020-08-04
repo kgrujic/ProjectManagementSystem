@@ -1,4 +1,5 @@
-﻿@model ProjectManagementSystem.Models.ProjectViewModels.ProjectViewModel
+﻿@using ProjectManagementSystem.Models.ProjectViewModels
+@model ProjectManagementSystem.Models.ProjectViewModels.ProjectViewModel
 @{  
     ViewBag.Title = "Edit";  
 }  
@@ -23,7 +24,7 @@
             </div>
             <div class="form-group">
                 <label>Project Manager: </label>
-                <select asp-for="ProjectManagerId" asp-items="@Model.ProjectManagers" >
+                <select asp-for="ProjectManagerId" asp-items="@ProjectViewModel.ProjectManagers" >
                     <option selected value=@Model.ProjectManagerId>@Model.ProjectManager.FullName</option>
                 </select>
             </div>

@@ -16,7 +16,7 @@ namespace ProjectManagementSystem.Repositories
             _context = context;
 
         }
-        public IEnumerable<Project> GetProjects()
+        public IEnumerable<Project> GetAllProjects()
         {
             return _context.Projects.Include(p => p.ProjectManager).Include(p => p.Tasks).ToList();
             

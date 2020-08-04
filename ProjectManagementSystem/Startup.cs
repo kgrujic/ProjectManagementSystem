@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -48,6 +49,8 @@ namespace ProjectManagementSystem
             services.AddScoped<ITaskRepository, TaskRepository>();
             services.AddScoped<IUserHelper, UserHelper>();
             
+            services.AddAutoMapper(typeof(Startup));
+            
          
         }
 
@@ -81,6 +84,8 @@ namespace ProjectManagementSystem
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+            
+            
             
             CreateRoles(serviceProvider).Wait();
         }

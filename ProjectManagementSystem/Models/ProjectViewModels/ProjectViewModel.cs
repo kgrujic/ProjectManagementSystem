@@ -19,7 +19,6 @@ namespace ProjectManagementSystem.Models.ProjectViewModels
         
         public ApplicationUser ProjectManager { get; set; }
         
-        public string UserRole { get; set; }
-        public List<SelectListItem> ProjectManagers { set; get; }
+        public static List<SelectListItem> ProjectManagers { set; get; }
     }
 }

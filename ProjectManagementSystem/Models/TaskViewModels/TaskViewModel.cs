@@ -38,7 +38,7 @@ namespace ProjectManagementSystem.Models.TaskViewModels
         
         public Project Project{ get; set; }
         
-        public List<SelectListItem> Developers { set; get; }
-        public List<SelectListItem> Statuses { set; get; }
+        public static List<SelectListItem> Developers { set; get; }
+        public static List<SelectListItem> Statuses { set; get; }
     }
 }

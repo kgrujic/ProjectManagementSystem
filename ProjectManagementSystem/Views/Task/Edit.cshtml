@@ -1,6 +1,7 @@
 @model ProjectManagementSystem.Models.TaskViewModels.TaskViewModel
 @using Microsoft.AspNetCore.Http
 @using Microsoft.AspNetCore.Identity
+@using ProjectManagementSystem.Models.TaskViewModels
 @inject UserManager<ApplicationUser> UserManager
 @inject IHttpContextAccessor HttpContextAccessor
 @{  
@@ -50,13 +51,24 @@
             </div>
             <div class="form-group">
                 <label>Assignee: </label>
-                <select asp-for="AssigneeId" asp-items="@Model.Developers" >
-                   @Model.Assignee != null ? @Model.Assignee.FullName : Please select assignee
+                <select asp-for="AssigneeId" asp-items="@TaskViewModel.Developers" >
+                  @if (@Model.Assignee.FullName != null)
+                                      {
+                                          <option selected value=@Model.AssigneeId>
+                                               @Model.Assignee.FullName
+                                          </option>
+                                      }
+                                      @if(Model.Assignee.FullName == null){
+                                          <option selected value="">
+                                              Please select assignee 
+                                              </option>
+                                      }
+                                      
                 </select>
             </div>  
             <div class="form-group">
                 <label>Status: </label>
-                <select asp-for="Status" asp-items="@Model.Statuses" >
+                <select asp-for="Status" asp-items="@TaskViewModel.Statuses" >
                     <option selected value=@Model.Status>@Model.Status</option>
                 </select>
             </div>
@@ -94,15 +106,25 @@
             </div>
             <div class="form-group">
                 <label>Assignee: </label>
-                <select asp-for="AssigneeId" asp-items="@Model.Developers" >
-                    <option selected value=@Model.AssigneeId>
-                        @Model.Assignee != null ? @Model.Assignee.FullName 
-                    </option>
+                <select asp-for="AssigneeId" asp-items="@TaskViewModel.Developers">
+                    @if (@Model.Assignee.FullName != null)
+                    {
+                        <option selected value=@Model.AssigneeId>
+                             @Model.Assignee.FullName
+                        </option>
+                    }
+                    @if(Model.Assignee.FullName == null){
+                        <option selected value="">
+                            Please select assignee 
+                            </option>
+                    }
+                    
+                    
                 </select>
             </div>  
             <div class="form-group">
                 <label>Status: </label>
-                <select asp-for="Status" asp-items="@Model.Statuses" >
+                <select asp-for="Status" asp-items="@TaskViewModel.Statuses" >
                     <option selected value=@Model.Status>@Model.Status</option>
                 </select>
             </div>
@@ -113,7 +135,7 @@
                 @Html.HiddenFor(m => m.AssigneeId)  
                 <div class="form-group">
                     <label>Status: </label>
-                    <select asp-for="Status" asp-items="@Model.Statuses" >
+                    <select asp-for="Status" asp-items="@TaskViewModel.Statuses" >
                         <option selected value=@Model.Status>@Model.Status</option>
                     </select>
                 </div>

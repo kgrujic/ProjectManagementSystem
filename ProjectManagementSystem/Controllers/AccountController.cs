@@ -78,15 +78,11 @@ namespace ProjectManagementSystem.Controllers
         public IActionResult Register(string? returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
+            
+            AddRolesToRegisterViewModel();
             var vm = new RegisterViewModel();
             
-            vm.Roles = new List<SelectListItem>
-            {
-                new SelectListItem{Text = "Administrator", Value = "Administrator"},
-                new SelectListItem{Text = "ProjectManager", Value = "ProjectManager"},
-                new SelectListItem{Text = "Developer", Value = "Developer"}
-                
-            };
+          
             return View(vm);
         }
  
@@ -146,7 +142,8 @@ namespace ProjectManagementSystem.Controllers
                 {
                     _logger.LogInformation("User logged in.");
 
-                    return RedirectToLocal(returnUrl);
+                    //return RedirectToLocal(returnUrl);
+                    return RedirectToAction("Projects", "Project");
                 }
                 if (result.IsLockedOut)
                 {
@@ -258,9 +255,18 @@ namespace ProjectManagementSystem.Controllers
            _userManager.DeleteAsync(us);
            _userManager.RemoveFromRoleAsync(user, oldRole);
            return RedirectToAction("Index","Home");
-        }  
-        
-      
+        }
+
+        public void AddRolesToRegisterViewModel()
+        {
+            RegisterViewModel.Roles = new List<SelectListItem>
+            {
+                new SelectListItem{Text = "Administrator", Value = "Administrator"},
+                new SelectListItem{Text = "ProjectManager", Value = "ProjectManager"},
+                new SelectListItem{Text = "Developer", Value = "Developer"}
+                
+            };
+        }
       
 
     }

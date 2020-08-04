@@ -36,7 +36,7 @@ namespace ProjectManagementSystem.Models.AccountViewModels
         [Display(Name = "Role")]
         public string Role { get; set; }
         
-        public List<SelectListItem> Roles { set; get; }
+        public static List<SelectListItem> Roles { set; get; }
         
     }
 }

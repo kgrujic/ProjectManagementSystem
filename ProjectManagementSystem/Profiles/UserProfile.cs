@@ -14,7 +14,9 @@ namespace ProjectManagementSystem.Profiles
                     opt => opt.MapFrom(src => src.RoleName))
                 .ReverseMap();
             
-          
+            CreateMap<ApplicationUser, EditViewModel>().ReverseMap();
+
+
         }
     }
 }

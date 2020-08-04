@@ -6,17 +6,17 @@
 @{
 ViewData["Title"] = "Tasks";
 }
-@Html.ActionLink("Back to Projects", "Projects","Project",new {@class="btn btn-primary"})
-<h3>Tasks for project @Model.FirstOrDefault()?.Project.ProjectName</h3>  
+@Html.ActionLink("Back to Projects", "Projects","Project",new {@class="btn btn-primary mb-3"})
+<h3 class="mb-4">Tasks for project @Model.FirstOrDefault()?.Project.ProjectName</h3>  
 <table class="table table-bordered">  
     <thead>  
     <tr>  
-        <th>Project Name:</th>  
-        <th>@Html.DisplayNameFor(m => m.Status)</th>  
-        <th>@Html.DisplayNameFor(m => m.Progress)</th>  
-        <th>@Html.DisplayNameFor(m => m.Deadline)</th>  
-        <th>@Html.DisplayNameFor(m => m.Description)</th>
-        <th>Assignee:</th>
+        <th class="text-center">Project Name:</th>  
+        <th class="text-center">@Html.DisplayNameFor(m => m.Status)</th>  
+        <th class="text-center">@Html.DisplayNameFor(m => m.Progress)</th>  
+        <th class="text-center">@Html.DisplayNameFor(m => m.Deadline)</th>  
+        <th class="text-center">@Html.DisplayNameFor(m => m.Description)</th>
+        <th class="text-center">Assignee:</th>
     </tr>  
     </thead>  
     <tbody>  
@@ -31,6 +31,10 @@ ViewData["Title"] = "Tasks";
             @if (t.Assignee != null)
             {
                 <td>@t.Assignee.FullName</td> 
+            }
+            @if (t.Assignee == null)
+            {
+                <td></td>
             }
            
             

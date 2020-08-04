@@ -7,14 +7,14 @@
 @{
     ViewData["Title"] = "Projects";
 }
-<h3>Projects</h3>  
+<h3 class="mb-3">Projects</h3>  
 <table class="table table-bordered">  
     <thead>  
         <tr>  
-            <th>@Html.DisplayNameFor(m => m.ProjectCode)</th>  
-            <th>@Html.DisplayNameFor(m => m.ProjectName)</th>  
-            <th>Project Manager:</th>
-            <th>Project Progress:</th>
+            <th class="text-center">@Html.DisplayNameFor(m => m.ProjectCode)</th>  
+            <th class="text-center">@Html.DisplayNameFor(m => m.ProjectName)</th>  
+            <th class="text-center">Project Manager</th>
+            <th class="text-center">Project Progress</th>
            
         </tr>  
     </thead>  
@@ -22,10 +22,10 @@
         @foreach (var p in Model)  
         {  
             <tr>  
-                <td>@p.ProjectCode</td>  
-                <td>@p.ProjectName</td>   
-                <td>@p.ProjectManager.FullName</td>  
-                <td>Progress: 
+                <td class="text-center">@p.ProjectCode</td>  
+                <td class="text-center">@p.ProjectName</td>   
+                <td class="text-center">@p.ProjectManager.FullName</td>  
+                <td class="text-center">
                 @{
                     var sum = 0;
                     var message = "";
@@ -39,7 +39,16 @@
                     message = progress + " %";
                 }
                 @message
-                    </td> 
+                </td> 
+                
+                 @if (UserManager.FindByIdAsync(UserManager.GetUserId(HttpContextAccessor.HttpContext.User)).Result.RoleName == "Administrator")
+                                {
+                                    <td>  
+                                        @Html.ActionLink("Details","Details",new {id= p.ProjectCode},new {@class="btn btn-info"})  
+                                        @Html.ActionLink("Edit", "Edit", new { id = p.ProjectCode }, new { @class = "btn btn-primary" })
+                                        @Html.ActionLink("Delete", "Delete", new { id = p.ProjectCode }, new { @class = "btn btn-danger" })  
+                                    </td>  
+                                }
                 
                 @if (UserManager.FindByIdAsync(UserManager.GetUserId(HttpContextAccessor.HttpContext.User)).Result.RoleName == "Administrator" || UserManager.FindByIdAsync(UserManager.GetUserId(HttpContextAccessor.HttpContext.User)).Result.RoleName == "ProjectManager")
                 {
@@ -48,14 +57,7 @@
                 
                  <td> @Html.ActionLink("Tasks","Tasks","Task",new { prId = p.ProjectCode },new {@class="btn btn-info"})  </td>
      
-                @if (UserManager.FindByIdAsync(UserManager.GetUserId(HttpContextAccessor.HttpContext.User)).Result.RoleName == "Administrator")
-                {
-                    <td>  
-                        @Html.ActionLink("Details","Details",new {id= p.ProjectCode},new {@class="btn btn-info"})  
-                        @Html.ActionLink("Edit", "Edit", new { id = p.ProjectCode }, new { @class = "btn btn-primary" })
-                        @Html.ActionLink("Delete", "Delete", new { id = p.ProjectCode }, new { @class = "btn btn-danger" })  
-                    </td>  
-                }
+               
 
             </tr>  
         }  

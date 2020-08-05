@@ -9,6 +9,7 @@ using ProjectManagementSystem.Models;
 
 namespace ProjectManagementSystem.Controllers
 {
+  
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -33,5 +34,9 @@ namespace ProjectManagementSystem.Controllers
         {
             return View(new ErrorViewModel {RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier});
         }
+        
+      
+         
+
     }
 }

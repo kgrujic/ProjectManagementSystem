@@ -60,6 +60,7 @@ namespace ProjectManagementSystem
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+            
             }
             else
             {
@@ -68,7 +69,7 @@ namespace ProjectManagementSystem
                 app.UseHsts();
             }
             
-
+       
            // app.UseHttpsRedirection();
             app.UseStaticFiles();
             
@@ -77,15 +78,19 @@ namespace ProjectManagementSystem
             app.UseRouting();
             
             app.UseAuthorization();
+            
+            app.UseStatusCodePagesWithReExecute("/error", "?status={0}");
 
             app.UseEndpoints(endpoints =>
             {
+                
+                
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
             
-            
+           
             
             CreateRoles(serviceProvider).Wait();
         }

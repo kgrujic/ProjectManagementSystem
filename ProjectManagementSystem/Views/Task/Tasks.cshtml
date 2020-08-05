@@ -16,21 +16,21 @@ ViewData["Title"] = "Tasks";
         <th class="text-center">@Html.DisplayNameFor(m => m.Progress)</th>  
         <th class="text-center">@Html.DisplayNameFor(m => m.Deadline)</th>  
         <th class="text-center">@Html.DisplayNameFor(m => m.Description)</th>
-        <th class="text-center">Assignee:</th>
+        <th class="text-center">Assignee</th>
     </tr>  
     </thead>  
     <tbody>  
     @foreach (var t in Model)  
     {  
         <tr>  
-            <td>@t.Project.ProjectName</td>  
-            <td>@t.Status</td>   
-            <td>@t.Progress %</td> 
-            <td>@t.Deadline</td> 
-            <td>@t.Description</td> 
+            <td class="text-center">@t.Project.ProjectName</td>  
+            <td class="text-center">@t.Status</td>   
+            <td class="text-center">@t.Progress %</td> 
+            <td class="text-center">@t.Deadline</td> 
+            <td class="text-center">@t.Description</td> 
             @if (t.Assignee != null)
             {
-                <td>@t.Assignee.FullName</td> 
+                <td class="text-center">@t.Assignee.FullName</td> 
             }
             @if (t.Assignee == null)
             {

@@ -21,10 +21,13 @@
                 <td class="text-center">@u.UserName</td>  
                 <td class="text-center">@u.Email</td>
                 <td class="text-center">@u.RoleName</td>
-                <td>  
-                   @Html.ActionLink("Details","Details",new {id=u.Id },new {@class="btn btn-info"})  
-                   @Html.ActionLink("Edit", "Edit", new { id = u.Id }, new { @class = "btn btn-primary" })  
-                   @Html.ActionLink("Delete", "Delete", new { id = u.Id }, new { @class = "btn btn-danger" })  
+                <td> 
+                    <div class="d-flex justify-content-between">
+                        @Html.ActionLink("Details","Details",new {id=u.Id },new {@class="btn btn-info"})  
+                        @Html.ActionLink("Edit", "Edit", new { id = u.Id }, new { @class = "btn btn-primary" })  
+                        @Html.ActionLink("Delete", "Delete", new { id = u.Id }, new { @class = "btn btn-danger" })  
+                    </div>
+                    
                 </td>  
             </tr>  
         }  

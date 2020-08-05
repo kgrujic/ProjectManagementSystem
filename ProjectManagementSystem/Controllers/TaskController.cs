@@ -117,15 +117,14 @@ namespace ProjectManagementSystem.Controllers
         public ActionResult Edit(TaskViewModel task)  
         {  
             if (ModelState.IsValid)  
-            {  
-                
+            {
                 var newTask = _mapper.Map<Task>(task);
                 
                _repository.UpdateTask(newTask);
                
                  return RedirectToAction( "Tasks", new RouteValueDictionary( 
                     new { controller = "Task", action = "Tasks", prId = task.ProjectCode } ) );
-   
+               
             }  
             else  
             {  

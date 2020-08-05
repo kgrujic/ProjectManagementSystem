@@ -4,163 +4,157 @@
 @using ProjectManagementSystem.Models.TaskViewModels
 @inject UserManager<ApplicationUser> UserManager
 @inject IHttpContextAccessor HttpContextAccessor
-@{  
-    ViewBag.Title = "Edit";  
-}  
+@{
+    ViewBag.Title = "Edit";
+}
 
-    <div class="card-header bg-dark text-white">  
-        <h3>Edit Task</h3>  
-    </div>  
-    <div class="card-body">  
-        @using (Html.BeginForm())  
-        {  
-            @Html.AntiForgeryToken()  
-            @Html.HiddenFor(m => m.TaskID)  
-            @Html.HiddenFor(m => m.ProjectCode)  
-            
+<div class="card-header bg-dark text-white">
+    <h3>Edit Task</h3>
+</div>
+<div class="card-body">
+    <table class="table table-borderless">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.TaskID)
+            @Html.HiddenFor(m => m.ProjectCode)
+
             @if (UserManager.FindByIdAsync(UserManager.GetUserId(HttpContextAccessor.HttpContext.User)).Result.RoleName == "Administrator")
             {
-              
-                <div class="row">  
-                <div class="col-md-6">  
-                    <div class="form-group">  
-                        @Html.LabelFor(m => m.Progress)  
-                        @Html.EditorFor(m => m.Progress, new { htmlAttributes = new { @class = "form-control" } })  
-                        @Html.ValidationMessageFor(m => m.Progress)  
-                    </div>  
-                </div>  
-                
-                <div class="row">  
-                                <div class="col-md-6">  
-                                    <div class="form-group">  
-                                        @Html.LabelFor(m => m.Deadline)  
-                                        @Html.EditorFor(m => m.Deadline, new { htmlAttributes = new { @class = "form-control" } })  
-                                        @Html.ValidationMessageFor(m => m.Deadline)  
-                                    </div>  
-                                </div>  
-                    </div>  
-                <div class="row">  
-                                <div class="col-md-6">  
-                                    <div class="form-group">  
-                                        @Html.LabelFor(m => m.Description)  
-                                        @Html.TextAreaFor(m => m.Description, new { htmlAttributes = new { @class = "form-control" } })  
-                                        @Html.ValidationMessageFor(m => m.Description)  
-                                    </div>  
-                                </div>  
-                            </div>
-            </div>
-            <div class="form-group">
-                <label>Assignee: </label>
-                <select asp-for="AssigneeId" asp-items="@TaskViewModel.Developers" >
-                  @if (@Model.Assignee.FullName != null)
-                                      {
-                                          <option selected value=@Model.AssigneeId>
-                                               @Model.Assignee.FullName
-                                          </option>
-                                      }
-                                      @if(Model.Assignee.FullName == null){
-                                          <option selected value="">
-                                              Please select assignee 
-                                              </option>
-                                      }
-                                      
-                </select>
-            </div>  
-            <div class="form-group">
-                <label>Status: </label>
-                <select asp-for="Status" asp-items="@TaskViewModel.Statuses" >
-                    <option selected value=@Model.Status>@Model.Status</option>
-                </select>
-            </div>
-            }    
-            @if (UserManager.FindByIdAsync(UserManager.GetUserId(HttpContextAccessor.HttpContext.User)).Result.RoleName == "ProjectManager")
-            {
-              
-                <div class="row">  
-                <div class="col-md-6">  
-                    <div class="form-group">  
-                        @Html.LabelFor(m => m.Progress)  
-                        @Html.EditorFor(m => m.Progress, new { htmlAttributes = new { @class = "form-control" } })  
-                        @Html.ValidationMessageFor(m => m.Progress)
-                    </div>  
-                </div>  
-                
-                <div class="row">  
-                                <div class="col-md-6">  
-                                    <div class="form-group">  
-                                        @Html.LabelFor(m => m.Deadline)  
-                                        @Html.EditorFor(m => m.Deadline, new { htmlAttributes = new { @class = "form-control" } })  
-                                        @Html.ValidationMessageFor(m => m.Deadline)  
-                                    </div>  
-                                </div>  
-                    </div>  
-                <div class="row">  
-                                <div class="col-md-6">  
-                                    <div class="form-group">  
-                                        @Html.LabelFor(m => m.Description)  
-                                        @Html.EditorFor(m => m.Description, new { htmlAttributes = new { @class = "form-control" } })  
-                                        @Html.ValidationMessageFor(m => m.Description)  
-                                    </div>  
-                                </div>  
-                            </div>
-            </div>
-            <div class="form-group">
-                <label>Assignee: </label>
-                <select asp-for="AssigneeId" asp-items="@TaskViewModel.Developers">
-                    @if (@Model.Assignee.FullName != null)
-                    {
-                        <option selected value=@Model.AssigneeId>
-                             @Model.Assignee.FullName
-                        </option>
-                    }
-                    @if(Model.Assignee.FullName == null){
-                        <option selected value="">
-                            Please select assignee 
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Progress)
+                    @Html.EditorFor(m => m.Progress, new {htmlAttributes = new {@class = "form-control"}})
+                    @Html.ValidationMessageFor(m => m.Progress)
+                </div>
+
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Deadline)
+                    @Html.EditorFor(m => m.Deadline, new {htmlAttributes = new {@class = "form-control"}})
+                    @Html.ValidationMessageFor(m => m.Deadline)
+                </div>
+
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Description)
+                    @Html.TextAreaFor(m => m.Description, new {htmlAttributes = new {@class = "form-control"}})
+                    @Html.ValidationMessageFor(m => m.Description)
+                </div>
+
+
+                <div class="form-group">
+                    <label>Assignee: </label>
+                    <select asp-for="AssigneeId" asp-items="@TaskViewModel.Developers">
+                        @if (@Model.Assignee != null)
+                        {
+                            <option selected value=@Model.AssigneeId>
+                                @Model.Assignee.FullName
                             </option>
-                    }
-                    
-                    
-                </select>
-            </div>  
-            <div class="form-group">
-                <label>Status: </label>
-                <select asp-for="Status" asp-items="@TaskViewModel.Statuses" >
-                    <option selected value=@Model.Status>@Model.Status</option>
-                </select>
-            </div>
-            }
-            @if (UserManager.FindByIdAsync(UserManager.GetUserId(HttpContextAccessor.HttpContext.User)).Result.RoleName == "Developer")
-                
-            {
-                @Html.HiddenFor(m => m.AssigneeId)  
+                        }
+                        @if (Model.Assignee == null)
+                        {
+                            <option selected value="">
+                                Please select assignee
+                            </option>
+                        }
+
+                    </select>
+                </div>
                 <div class="form-group">
                     <label>Status: </label>
-                    <select asp-for="Status" asp-items="@TaskViewModel.Statuses" >
+                    <select asp-for="Status" asp-items="@TaskViewModel.Statuses">
                         <option selected value=@Model.Status>@Model.Status</option>
                     </select>
                 </div>
-                <div class="col-md-6">  
-                    <div class="form-group">  
-                        @Html.LabelFor(m => m.Progress)  
-                        @Html.EditorFor(m => m.Progress, new { htmlAttributes = new { @class = "form-control" } })  
-                        @Html.ValidationMessageFor(m => m.Progress)  
-                    </div>  
-                </div>  
-                <div class="row">  
-                    <div class="col-md-6">  
-                        <div class="form-group">  
-                            @Html.LabelFor(m => m.Description)  
-                            @Html.EditorFor(m => m.Description, new { htmlAttributes = new { @class = "form-control" } })  
-                            @Html.ValidationMessageFor(m => m.Description)  
-                        </div>  
-                    </div>  
-                </div>
-                
             }
-          
-            <div class="form-group">  
-                <button type="submit" class="btn btn-primary">Update</button>  
-                @Html.ActionLink("Cancel", "Projects","Project",new {@class="btn btn-primary"})
-            </div>  
-        }  
-    </div>  
+            @if (UserManager.FindByIdAsync(UserManager.GetUserId(HttpContextAccessor.HttpContext.User)).Result.RoleName == "ProjectManager")
+            {
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Progress)
+                            @Html.EditorFor(m => m.Progress, new {htmlAttributes = new {@class = "form-control"}})
+                            @Html.ValidationMessageFor(m => m.Progress)
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Deadline)
+                                @Html.EditorFor(m => m.Deadline, new {htmlAttributes = new {@class = "form-control"}})
+                                @Html.ValidationMessageFor(m => m.Deadline)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Description)
+                                @Html.EditorFor(m => m.Description, new {htmlAttributes = new {@class = "form-control"}})
+                                @Html.ValidationMessageFor(m => m.Description)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Assignee: </label>
+                    <select asp-for="AssigneeId" asp-items="@TaskViewModel.Developers">
+                        @if (@Model.Assignee != null)
+                        {
+                            <option selected value=@Model.AssigneeId>
+                                @Model.Assignee.FullName
+                            </option>
+                        }
+                        @if (Model.Assignee == null)
+                        {
+                            <option selected value="">
+                                Please select assignee
+                            </option>
+                        }
+
+
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Status: </label>
+                    <select asp-for="Status" asp-items="@TaskViewModel.Statuses">
+                        <option selected value=@Model.Status>@Model.Status</option>
+                    </select>
+                </div>
+            }
+            @if (UserManager.FindByIdAsync(UserManager.GetUserId(HttpContextAccessor.HttpContext.User)).Result.RoleName == "Developer")
+
+            {
+                @Html.HiddenFor(m => m.AssigneeId)
+                <div class="form-group">
+                    <label>Status: </label>
+                    <select asp-for="Status" asp-items="@TaskViewModel.Statuses">
+                        <option selected value=@Model.Status>@Model.Status</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Progress)
+                        @Html.EditorFor(m => m.Progress, new {htmlAttributes = new {@class = "form-control"}})
+                        @Html.ValidationMessageFor(m => m.Progress)
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Description)
+                            @Html.EditorFor(m => m.Description, new {htmlAttributes = new {@class = "form-control"}})
+                            @Html.ValidationMessageFor(m => m.Description)
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary mr-3">Update</button>
+                @Html.ActionLink("Cancel", "Projects", "Project", new {@class = "btn btn-primary"})
+            </div>
+        }
+    </table>
+</div>

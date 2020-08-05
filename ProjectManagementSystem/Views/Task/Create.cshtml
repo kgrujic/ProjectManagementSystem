@@ -1,48 +1,53 @@
 @using ProjectManagementSystem.Models.TaskViewModels
 @model ProjectManagementSystem.Models.TaskViewModels.TaskViewModel
 @{
-ViewData["Title"] = "Create Task";
+    ViewData["Title"] = "Create Task";
 }
 
 <div class="d-flex flex-column align-items-center mt-5">
-<h2>@ViewData["Title"]</h2>
-  
-<div class="card-body">  
-    @using (Html.BeginForm())  
-    {  
-        @Html.AntiForgeryToken()  
-        @Html.HiddenFor(m => m.TaskID)  
-        @Html.HiddenFor(m => m.ProjectCode)  
-        
-          
-                <div class="form-group">  
-                    @Html.LabelFor(m => m.Deadline)  
-                    @Html.EditorFor(m => m.Deadline, new { htmlAttributes = new { @class = "form-control" } })  
-                    @Html.ValidationMessageFor(m => m.Deadline)  
-                </div>  
-                
-                <div class="form-group">  
-                    @Html.LabelFor(m => m.Description)  
-                    @Html.TextAreaFor(m => m.Description, new { htmlAttributes = new { @class = "form-control" } })  
-                    @Html.ValidationMessageFor(m => m.Description)  
-                </div>  
-           
-    
-        <div class="form-group">
-            <label>Status: </label>
-            <select asp-for="Status" asp-items="@TaskViewModel.Statuses" >
-                <option value="">Please select status</option>
-            </select>
-        </div>  
-        <div class="form-group">
-            <label>Assignee </label>
-            <select asp-for="AssigneeId" asp-items="@TaskViewModel.Developers" >
-                <option value="">Please select assignee</option>
-            </select>
-        </div>
-        <div class="form-group">  
-            <button type="submit" class="btn btn-primary mr-3">Create</button>  
-                   @Html.ActionLink("Cancel", "Projects","Project",new {@class="btn btn-primary"})
-        </div>  
-    }  
-</div></div> 
+    <h2>@ViewData["Title"]</h2>
+
+    <div class="card-body">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.TaskID)
+            @Html.HiddenFor(m => m.ProjectCode)
+
+
+            <div class="form-group">
+
+                <label asp-for="Deadline"></label>
+                <input asp-for="Deadline" class="form-control"/>
+                <span asp-validation-for="Deadline" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+
+                <label asp-for="Description"></label>
+                <input asp-for="Description" class="form-control"/>
+                <span asp-validation-for="Description" class="text-danger"></span>
+
+
+            </div>
+
+
+            <div class="form-group">
+                <label>Status: </label>
+                <select asp-for="Status" asp-items="@TaskViewModel.Statuses">
+                    <option value="">Please select status</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Assignee </label>
+                <select asp-for="AssigneeId" asp-items="@TaskViewModel.Developers">
+                    <option value="">Please select assignee</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary mr-3">Create</button>
+                @Html.ActionLink("Cancel", "Projects", "Project", new {@class = "btn btn-primary"})
+            </div>
+        }
+    </div>
+</div>

@@ -175,7 +175,7 @@ namespace ProjectManagementSystem.Controllers
         {
             await _signInManager.SignOutAsync();
             _logger.LogInformation("User logged out.");
-            return RedirectToAction("Index","Home");
+            return RedirectToAction("Login");
         }
         
         public ActionResult Details(string id)  

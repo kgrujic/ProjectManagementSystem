@@ -27,9 +27,9 @@ namespace ProjectManagementSystem.Repositories
             return list;
         }  
         
-        public IEnumerable<Task> GetTasksForUser(string userId)
+        public IEnumerable<Task> GetTasksForUser(string userId, int prId)
         {
-            return _context.Tasks.Include(t => t.Assignee).Include(t => t.Project).Where(t => t.AssigneeId == userId || t.AssigneeId == null).ToList();
+            return _context.Tasks.Include(t => t.Assignee).Include(t => t.Project).Where(t => (t.AssigneeId == userId|| t.AssigneeId == null)  && t.ProjectCode == prId).ToList();
         }
 
         public Task GetTaskById(int id)

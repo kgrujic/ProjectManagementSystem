@@ -55,7 +55,7 @@ namespace ProjectManagementSystem.Controllers
             }
             else if (loggedInUser.RoleName == Role.Developer.ToString())
             {
-                tasks = _repository.GetTasksForUser(loggedInUser.Id).ToList();
+                tasks = _repository.GetTasksForUser(loggedInUser.Id, prId).ToList();
             }
             
             return View(tasks);  

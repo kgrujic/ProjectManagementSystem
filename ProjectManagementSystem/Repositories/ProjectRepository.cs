@@ -40,12 +40,12 @@ namespace ProjectManagementSystem.Repositories
                     if (project.Tasks.Contains(task))
                     {
                         projects.Add(project);
-                        continue;
+                        break;
                     }
                 }
             }
 
-            return projects.Distinct();
+            return projects;
 
         }
 

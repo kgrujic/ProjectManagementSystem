@@ -6,8 +6,14 @@
 @{
 ViewData["Title"] = "Tasks";
 }
+@{
+    var loggedInUserRoleName = UserManager.FindByIdAsync(UserManager.GetUserId(HttpContextAccessor.HttpContext.User)).Result.RoleName; 
+
+}
+
 @Html.ActionLink("Back to Projects", "Projects","Project",new {@class="btn btn-primary mb-3"})
 <h3 class="mb-4">Tasks for project @Model.FirstOrDefault()?.Project.ProjectName</h3>  
+
 <table class="table table-bordered">  
     <thead>  
     <tr>  
@@ -40,8 +46,9 @@ ViewData["Title"] = "Tasks";
             
                 <td>
                     @Html.ActionLink("Edit", "Edit", new { id = t.TaskID }, new { @class = "btn btn-primary" })
-                </td>  
-                @if (UserManager.FindByIdAsync(UserManager.GetUserId(HttpContextAccessor.HttpContext.User)).Result.RoleName == "Administrator")
+            </td> 
+           
+            @if (loggedInUserRoleName == "Administrator")
                 {
                 <td>
                      @Html.ActionLink("Delete", "Delete", new { id = t.TaskID }, new { @class = "btn btn-danger" })

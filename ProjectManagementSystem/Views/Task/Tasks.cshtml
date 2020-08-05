@@ -4,58 +4,58 @@
 @inject UserManager<ApplicationUser> UserManager
 @inject IHttpContextAccessor HttpContextAccessor
 @{
-ViewData["Title"] = "Tasks";
+    ViewData["Title"] = "Tasks";
 }
 @{
-    var loggedInUserRoleName = UserManager.FindByIdAsync(UserManager.GetUserId(HttpContextAccessor.HttpContext.User)).Result.RoleName; 
+    var loggedInUserRoleName = UserManager.FindByIdAsync(UserManager.GetUserId(HttpContextAccessor.HttpContext.User)).Result.RoleName;
 
 }
 
-@Html.ActionLink("Back to Projects", "Projects","Project",new {@class="btn btn-primary mb-3"})
-<h3 class="mb-4">Tasks for project @Model.FirstOrDefault()?.Project.ProjectName</h3>  
+@Html.ActionLink("Back to Projects", "Projects", "Project", new {@class = "btn btn-primary mb-3"})
+<h3 class="mb-4">Tasks for project @Model.FirstOrDefault()?.Project.ProjectName</h3>
 
-<table class="table table-bordered">  
-    <thead>  
-    <tr>  
-        <th class="text-center">Project Name:</th>  
-        <th class="text-center">@Html.DisplayNameFor(m => m.Status)</th>  
-        <th class="text-center">@Html.DisplayNameFor(m => m.Progress)</th>  
-        <th class="text-center">@Html.DisplayNameFor(m => m.Deadline)</th>  
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th class="text-center">Project Name:</th>
+        <th class="text-center">@Html.DisplayNameFor(m => m.Status)</th>
+        <th class="text-center">@Html.DisplayNameFor(m => m.Progress)</th>
+        <th class="text-center">@Html.DisplayNameFor(m => m.Deadline)</th>
         <th class="text-center">@Html.DisplayNameFor(m => m.Description)</th>
         <th class="text-center">Assignee</th>
-    </tr>  
-    </thead>  
-    <tbody>  
-    @foreach (var t in Model)  
-    {  
-        <tr>  
-            <td class="text-center">@t.Project.ProjectName</td>  
-            <td class="text-center">@t.Status</td>   
-            <td class="text-center">@t.Progress %</td> 
-            <td class="text-center">@t.Deadline</td> 
-            <td class="text-center">@t.Description</td> 
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var t in Model)
+    {
+        <tr>
+            <td class="text-center">@t.Project.ProjectName</td>
+            <td class="text-center">@t.Status</td>
+            <td class="text-center">@t.Progress %</td>
+            <td class="text-center">@t.Deadline</td>
+            <td class="text-center">@t.Description</td>
             @if (t.Assignee != null)
             {
-                <td class="text-center">@t.Assignee.FullName</td> 
+                <td class="text-center">@t.Assignee.FullName</td>
             }
             @if (t.Assignee == null)
             {
                 <td></td>
             }
-           
-            
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = t.TaskID }, new { @class = "btn btn-primary" })
-            </td> 
-           
-            @if (loggedInUserRoleName == "Administrator")
-                {
-                <td>
-                     @Html.ActionLink("Delete", "Delete", new { id = t.TaskID }, new { @class = "btn btn-danger" })
-                </td>
-                }
 
-        </tr>  
-    }  
-    </tbody>  
-</table>  
+
+            <td>
+                @Html.ActionLink("Edit", "Edit", new {id = t.TaskID}, new {@class = "btn btn-primary"})
+            </td>
+
+            @if (loggedInUserRoleName == "Administrator")
+            {
+                <td>
+                    @Html.ActionLink("Delete", "Delete", new {id = t.TaskID}, new {@class = "btn btn-danger"})
+                </td>
+            }
+
+        </tr>
+    }
+    </tbody>
+</table>

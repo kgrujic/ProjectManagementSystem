@@ -7,6 +7,7 @@
 @{
     ViewData["Title"] = "Projects";
 }
+@{ var loggedInUserRole = UserManager.FindByIdAsync(UserManager.GetUserId(HttpContextAccessor.HttpContext.User)).Result.RoleName; }
 <h3 class="mb-3">Projects</h3>
 <table class="table table-bordered">
     <thead>
@@ -41,7 +42,7 @@
                 @message
             </td>
 
-            @if (UserManager.FindByIdAsync(UserManager.GetUserId(HttpContextAccessor.HttpContext.User)).Result.RoleName == "Administrator")
+            @if (loggedInUserRole == "Administrator")
             {
                 <td>
                     <div class="d-flex justify-content-between">
@@ -52,15 +53,12 @@
                 </td>
             }
 
-            @if (UserManager.FindByIdAsync(UserManager.GetUserId(HttpContextAccessor.HttpContext.User)).Result.RoleName == "Administrator" || UserManager.FindByIdAsync(UserManager.GetUserId(HttpContextAccessor.HttpContext.User)).Result.RoleName == "ProjectManager")
+            @if (loggedInUserRole == "Administrator" || loggedInUserRole == "ProjectManager")
             {
-                
-                    <td> @Html.ActionLink("Create Task", "Create", "Task", new {projId = p.ProjectCode}, new {@class = "btn btn-info"}) </td>
-               
+                <td> @Html.ActionLink("Create Task", "Create", "Task", new {projId = p.ProjectCode}, new {@class = "btn btn-info"}) </td>
             }
-           
-                <td> @Html.ActionLink("Tasks", "Tasks", "Task", new {prId = p.ProjectCode}, new {@class = "btn btn-info"}) </td>
-          
+
+            <td> @Html.ActionLink("Tasks", "Tasks", "Task", new {prId = p.ProjectCode}, new {@class = "btn btn-info"}) </td>
 
 
         </tr>

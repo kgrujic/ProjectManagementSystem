@@ -3,38 +3,38 @@
     ViewData["Title"] = "Details";
 }
 
-<div class="card" style="width:60%; margin:auto;">  
-    <div class="card-header bg-dark text-white">  
-        <h5>User Details</h5>  
-    </div>  
-    <div class="card-body">  
-        <table class="table table-borderless">  
-          
-                    <div class="form-group">
-                        <label asp-for="FullName"></label>
-                        <input readonly="readonly"  asp-for="FullName" class="form-control" />
-                        <span asp-validation-for="FullName" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="UserName"></label>
-                        <input readonly="readonly"  asp-for="UserName" class="form-control" />
-                        <span asp-validation-for="UserName" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Email"></label>
-                        <input readonly="readonly"  asp-for="Email" class="form-control" />
-                        <span asp-validation-for="Email" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                            <label asp-for="RoleName"></label>
-                        <input readonly="readonly" asp-for="RoleName" class="form-control"/>
-                        <span asp-validation-for="RoleName" class="text-danger"></span>
-                        </div>
-                    
-        </table>  
-        <p>  
-            @Html.ActionLink("Edit", "Edit", new { id = Model.Id },new {@class="btn btn-info mr-3"})
-            @Html.ActionLink("Back to List", "Users","Account",new {@class="btn btn-primary"})
-        </p>  
-    </div>  
-</div>  
+<div class="card" style="width:60%; margin:auto;">
+    <div class="card-header bg-dark text-white">
+        <h5>User Details</h5>
+    </div>
+    <div class="card-body">
+        <table class="table table-borderless">
+
+            <div class="form-group">
+                <label asp-for="FullName"></label>
+                <input readonly="readonly" asp-for="FullName" class="form-control"/>
+                <span asp-validation-for="FullName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserName"></label>
+                <input readonly="readonly" asp-for="UserName" class="form-control"/>
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email"></label>
+                <input readonly="readonly" asp-for="Email" class="form-control"/>
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RoleName"></label>
+                <input readonly="readonly" asp-for="RoleName" class="form-control"/>
+                <span asp-validation-for="RoleName" class="text-danger"></span>
+            </div>
+
+        </table>
+        <p>
+            @Html.ActionLink("Edit", "Edit", new {id = Model.Id}, new {@class = "btn btn-info mr-3"})
+            @Html.ActionLink("Back to List", "Users", "Account", new {@class = "btn btn-primary"})
+        </p>
+    </div>
+</div>

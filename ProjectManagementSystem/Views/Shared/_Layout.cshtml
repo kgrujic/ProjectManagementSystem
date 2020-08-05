@@ -1,79 +1,76 @@
 ﻿@using Microsoft.AspNetCore.Http
 @using Microsoft.AspNetCore.Http.Extensions
 @using Microsoft.AspNetCore.Identity
+@using ProjectManagementSystem.Helpers
 @inject UserManager<ApplicationUser> UserManager
 @inject IHttpContextAccessor HttpContextAccessor
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>@ViewData["Title"] - Project Management System</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="~/css/site.css"/>
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Project Management System</a>
-                @if (User.Identity.IsAuthenticated)
-                {
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                            aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                        <ul class="nav navbar-nav flex-grow-1">
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home  </a>
-                            </li> 
-                              @if (UserManager.FindByIdAsync(UserManager.GetUserId(HttpContextAccessor.HttpContext.User)).Result.RoleName == "Administrator")
-                              {
-                                                            <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register User</a></li>
-                                                            <li class="nav-item">
-                                                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Users">Users</a>
-                                                            </li>
-                                                            <li class="nav-item"> <a class="nav-link text-dark" asp-area="" asp-controller="Project" asp-action="Create">Create Project</a> </li>
-                              }
-                              <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Project" asp-action="Projects">Projects</a>
-                            </li>
-                           
+<header>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <div class="container">
+            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Project Management System</a>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <ul class="nav navbar-nav flex-grow-1">
+                                   @Html.ActiveActionLink("Home", "Index", "Home", null, new { @class = "nav-link" })
+                                   
+                        @{ var loggedInUserRole = UserManager.FindByIdAsync(UserManager.GetUserId(HttpContextAccessor.HttpContext.User)).Result.RoleName; }
+
+                        @if (loggedInUserRole == "Administrator")
+                        {
+                            @Html.ActiveActionLink("Register user", "Register", "Account", null, new { @class = "nav-link" })
+                            @Html.ActiveActionLink("Users", "Users", "Account", null, new { @class = "nav-link" })
+                            @Html.ActiveActionLink("Create Project", "Create", "Project", null, new { @class = "nav-link" })
                             
                            
-                          
-                              @if (UserManager.FindByIdAsync(UserManager.GetUserId(HttpContextAccessor.HttpContext.User)).Result.RoleName == "ProjectManager")
-                              {
-                                  <li class="nav-item">
-                                      <a class="nav-link text-dark" asp-area="" asp-controller="Project" asp-action="Create">Create Project</a>
-                                  </li>
-                              }
-                                     
-                        </ul>
-                        
-                    </div>
-                }
-                @await Html.PartialAsync("_LoginPartial")
-          
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+                        }
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2020 - ProjectManagementSystem - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                      @Html.ActiveActionLink("Projects", "Projects", "Project", null, new { @class = "nav-link" })
+
+
+                        @if (loggedInUserRole == "ProjectManager")
+                        {
+                            @Html.ActiveActionLink("Create Project", "Create", "Project", null, new { @class = "nav-link" })
+                        }
+
+                    </ul>
+
+                </div>
+            }
+            @await Html.PartialAsync("_LoginPartial")
+
         </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @RenderSection("Scripts", required: false)
+    </nav>
+</header>
+<div class="container">
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
+</div>
+
+<footer class="border-top footer text-muted">
+    <div class="container">
+        &copy; 2020 - ProjectManagementSystem - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    </div>
+</footer>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+@RenderSection("Scripts", required: false)
 </body>
 </html>

@@ -2,34 +2,34 @@
 @{
     ViewData["Title"] = "Users";
 }
-<h3 class="mb-3">Users</h3>  
-<table class="table table-bordered">  
-    <thead>  
-        <tr>  
-            <th class="text-center">@Html.DisplayNameFor(m => m.FullName)</th>  
-            <th class="text-center">@Html.DisplayNameFor(m => m.UserName)</th>  
-            <th class="text-center">@Html.DisplayNameFor(m => m.Email):</th>
-            <th class="text-center">@Html.DisplayNameFor(m => m.RoleName)</th>
-            <th class="text-center">Action(s)</th>  
-        </tr>  
-    </thead>  
-    <tbody>  
-        @foreach (var u in Model)  
-        {  
-            <tr>  
-                <td class="text-center">@u.FullName</td>  
-                <td class="text-center">@u.UserName</td>  
-                <td class="text-center">@u.Email</td>
-                <td class="text-center">@u.RoleName</td>
-                <td> 
-                    <div class="d-flex justify-content-between">
-                        @Html.ActionLink("Details","Details",new {id=u.Id },new {@class="btn btn-info"})  
-                        @Html.ActionLink("Edit", "Edit", new { id = u.Id }, new { @class = "btn btn-primary" })  
-                        @Html.ActionLink("Delete", "Delete", new { id = u.Id }, new { @class = "btn btn-danger" })  
-                    </div>
-                    
-                </td>  
-            </tr>  
-        }  
-    </tbody>  
-</table>  
+<h3 class="mb-3">Users</h3>
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th class="text-center">@Html.DisplayNameFor(m => m.FullName)</th>
+        <th class="text-center">@Html.DisplayNameFor(m => m.UserName)</th>
+        <th class="text-center">@Html.DisplayNameFor(m => m.Email):</th>
+        <th class="text-center">@Html.DisplayNameFor(m => m.RoleName)</th>
+        <th class="text-center">Action(s)</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var u in Model)
+    {
+        <tr>
+            <td class="text-center">@u.FullName</td>
+            <td class="text-center">@u.UserName</td>
+            <td class="text-center">@u.Email</td>
+            <td class="text-center">@u.RoleName</td>
+            <td>
+                <div class="d-flex justify-content-between">
+                    @Html.ActionLink("Details", "Details", new {id = u.Id}, new {@class = "btn btn-info"})
+                    @Html.ActionLink("Edit", "Edit", new {id = u.Id}, new {@class = "btn btn-primary"})
+                    @Html.ActionLink("Delete", "Delete", new {id = u.Id}, new {@class = "btn btn-danger"})
+                </div>
+
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

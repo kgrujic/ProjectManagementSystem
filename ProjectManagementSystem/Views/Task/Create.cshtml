@@ -17,7 +17,7 @@
 
             <div class="form-group">
                 <label asp-for="Deadline"></label>
-                <input asp-for="Deadline" class="form-control"/>
+                <input asp-for="Deadline" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-ddThh:mm")" >
                 <span asp-validation-for="Deadline" class="text-danger"></span>
             </div>
 

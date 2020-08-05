@@ -24,9 +24,9 @@ ViewData["Title"] = "Create Project";
             {
                 
                 <div class="form-group">
-                    <label>Project Manager:</label>
+                    <label class="mr-4">Project Manager:</label>
                     <select asp-for="ProjectManagerId" asp-items="@ProjectViewModel.ProjectManagers">
-                        <option value="">Please select one</option>
+                        <option value="">Please select project manager</option>
                     </select>
                       <span asp-validation-for="ProjectManagerId" class="text-danger"></span>
                 </div>

@@ -44,6 +44,7 @@ namespace ProjectManagementSystem.Controllers
         [Authorize(Roles = "Administrator, ProjectManager, Developer")]
         public ActionResult Tasks(int prId)
         {
+          
             var tasks = new List<Task>();
             
             var loggedInUser = _userHelper.GetLoggedInUser();

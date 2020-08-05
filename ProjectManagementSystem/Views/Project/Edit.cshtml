@@ -23,7 +23,7 @@
 
 
                 <div class="form-group">
-                    <label>Project Manager: </label>
+                    <label class="mr-4">Project Manager: </label>
                     <select asp-for="ProjectManagerId" asp-items="@ProjectViewModel.ProjectManagers">
                         <option selected value=@Model.ProjectManagerId>@Model.ProjectManager.FullName</option>
                     </select>

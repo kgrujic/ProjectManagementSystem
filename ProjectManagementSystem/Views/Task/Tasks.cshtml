@@ -14,6 +14,11 @@
 @Html.ActionLink("Back to Projects", "Projects", "Project", new {@class = "btn btn-primary mb-3"})
 <h3 class="mb-4">Tasks for project @Model.FirstOrDefault()?.Project.ProjectName</h3>
 
+@if (loggedInUserRoleName == "Administrator" || loggedInUserRoleName == "ProjectManager")
+{
+    @Html.ActionLink("Create Task", "Create","Task", new {projId = @Model.FirstOrDefault()?.Project.ProjectCode}, new {@class = "btn btn-info mb-5"})
+}
+
 <table class="table table-bordered">
     <thead>
     <tr>
@@ -30,7 +35,7 @@
     {
         <tr>
             <td class="text-center">@t.Project.ProjectName</td>
-            <td class="text-center">@t.Status</td>
+            <td class="text-center">@(@t.Status.Equals("InProgress") ? "In Progress" : @t.Status)</td>
             <td class="text-center">@t.Progress %</td>
             <td class="text-center">@t.Deadline</td>
             <td class="text-center">@t.Description</td>
@@ -54,8 +59,10 @@
                     @Html.ActionLink("Delete", "Delete", new {id = t.TaskID}, new {@class = "btn btn-danger"})
                 </td>
             }
-
+            
+   
         </tr>
     }
     </tbody>
 </table>
+

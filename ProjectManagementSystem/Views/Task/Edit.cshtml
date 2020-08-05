@@ -45,7 +45,7 @@
 
 
                 <div class="form-group">
-                    <label>Assignee: </label>
+                    <label class="mr-4">Assignee: </label>
                     <select asp-for="AssigneeId" asp-items="@TaskViewModel.Developers">
                         @if (@Model.Assignee != null)
                         {
@@ -63,7 +63,7 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Status: </label>
+                    <label class="mr-4">Status: </label>
                     <select asp-for="Status" asp-items="@TaskViewModel.Statuses">
                         <option selected value=@Model.Status>@Model.Status</option>
                     </select>
@@ -80,21 +80,18 @@
                         <option selected value=@Model.Status>@Model.Status</option>
                     </select>
                 </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label>Progress ( % )</label>
-                        <input asp-for="Progress" class="form-control"/>
-                        <span asp-validation-for="Progress" class="text-danger"></span>
-                    </div>
+
+                <div class="form-group">
+                    <label>Progress ( % )</label>
+                    <input asp-for="Progress" class="form-control"/>
+                    <span asp-validation-for="Progress" class="text-danger"></span>
                 </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label asp-for="Description"></label>
-                            <textarea asp-for="Description" class="form-control"></textarea>
-                            <span asp-validation-for="Description" class="text-danger"></span>
-                        </div>
-                    </div>
+
+
+                <div class="form-group">
+                    <label asp-for="Description"></label>
+                    <textarea asp-for="Description" class="form-control"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
                 </div>
             }
 

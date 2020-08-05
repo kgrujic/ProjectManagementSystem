@@ -38,7 +38,7 @@
 
 
                 <div class="form-group">
-                    <label asp-for="RoleName"></label>
+                    <label asp-for="RoleName" class="mr-4"></label>
                     <select asp-for="RoleName" asp-items="@EditViewModel.Roles">
                         <option selected value=@Model.RoleName>@Model.RoleName</option>
                     </select>

@@ -29,13 +29,13 @@
             </div>
             
             <div class="form-group">
-                <label>Status: </label>
+                <label class="mr-4">Status: </label>
                 <select asp-for="Status" asp-items="@TaskViewModel.Statuses">
                     <option value="">Please select status</option>
                 </select>
             </div>
             <div class="form-group">
-                <label>Assignee </label>
+                <label class="mr-4">Assignee </label>
                 <select asp-for="AssigneeId" asp-items="@TaskViewModel.Developers">
                     <option value="">Please select assignee</option>
                 </select>

@@ -15,7 +15,11 @@
         <th class="text-center">@Html.DisplayNameFor(m => m.ProjectCode)</th>
         <th class="text-center">@Html.DisplayNameFor(m => m.ProjectName)</th>
         <th class="text-center">Project Manager</th>
-        <th class="text-center">Project Progress</th>
+        @if (loggedInUserRole != "Developer")
+        {
+            <th class="text-center">Project Progress</th>
+        }
+        
 
     </tr>
     </thead>
@@ -26,21 +30,25 @@
             <td class="text-center">@p.ProjectCode</td>
             <td class="text-center">@p.ProjectName</td>
             <td class="text-center">@p.ProjectManager.FullName</td>
-            <td class="text-center">
-                @{
-                    var sum = 0;
-                    var message = "";
+             @if (loggedInUserRole != "Developer")
+             {
+                 <td class="text-center">
+                     @{
+                         var sum = 0;
+                         var message = "";
 
-                    @foreach (var t in p.Tasks)
-                    {
-                        sum += t.Progress;
-                    }
+                         @foreach (var t in p.Tasks)
+                         {
+                             sum += t.Progress;
+                         }
 
-                    var progress = p.Tasks.Count > 0 ? sum / p.Tasks.Count : 0;
-                    message = progress + " %";
-                }
-                @message
-            </td>
+                         var progress = p.Tasks.Count > 0 ? sum / p.Tasks.Count : 0;
+                         message = progress + " %";
+                     }
+                     @message
+                 </td>
+             }
+         
 
             @if (loggedInUserRole == "Administrator")
             {

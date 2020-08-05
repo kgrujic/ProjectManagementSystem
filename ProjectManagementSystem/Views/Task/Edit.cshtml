@@ -39,7 +39,7 @@
 
                 <div class="form-group">
                     <label asp-for="Description"></label>
-                    <input asp-for="Description" class="form-control"/>
+                    <textarea asp-for="Description" class="form-control"></textarea>
                     <span asp-validation-for="Description" class="text-danger"></span>
                 </div>
 
@@ -74,6 +74,7 @@
             {
                 @Html.HiddenFor(m => m.AssigneeId)
                 <div class="form-group">
+
                     <label>Status: </label>
                     <select asp-for="Status" asp-items="@TaskViewModel.Statuses">
                         <option selected value=@Model.Status>@Model.Status</option>
@@ -90,7 +91,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label asp-for="Description"></label>
-                            <input asp-for="Description" class="form-control"/>
+                            <textarea asp-for="Description" class="form-control"></textarea>
                             <span asp-validation-for="Description" class="text-danger"></span>
                         </div>
                     </div>

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using ProjectManagementSystem.Models.AccountViewModels;
 
 namespace ProjectManagementSystem.Models.ProjectViewModels
 {
@@ -15,6 +16,7 @@ namespace ProjectManagementSystem.Models.ProjectViewModels
         [Display(Name = "Project name:")]
         public string ProjectName { get; set; }
         
+        [Required(ErrorMessage= "Project Manager is required")]
         public string ProjectManagerId { get; set; }
         
         public ApplicationUser ProjectManager { get; set; }

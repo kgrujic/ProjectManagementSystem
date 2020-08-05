@@ -14,7 +14,7 @@ ViewData["Title"] = "Create Project";
     <div class="col-md-4">
         <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
             <hr/>
-            <div asp-validation-summary="All" class="text-danger"></div>
+          
             <div class="form-group">
                 <label asp-for="ProjectName"></label>
                 <input asp-for="ProjectName" class="form-control"/>
@@ -22,11 +22,13 @@ ViewData["Title"] = "Create Project";
             </div>
             @if (loggedInUserRole == "Administrator")
             {
+                
                 <div class="form-group">
                     <label>Project Manager:</label>
                     <select asp-for="ProjectManagerId" asp-items="@ProjectViewModel.ProjectManagers">
-                        <option>Please select one</option>
+                        <option value="">Please select one</option>
                     </select>
+                      <span asp-validation-for="ProjectManagerId" class="text-danger"></span>
                 </div>
             }
             <button type="submit" class="btn btn-primary mr-3">Create</button>

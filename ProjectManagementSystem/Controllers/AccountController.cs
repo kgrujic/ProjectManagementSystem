@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ProjectManagementSystem.ProjectManagementSystemDatabase.Context;
+using ProjectManagementSystem.Repositories;
 
 
 namespace ProjectManagementSystem.Controllers
@@ -27,12 +28,13 @@ namespace ProjectManagementSystem.Controllers
         
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
+        private readonly ITaskRepository _taskRepository;
         
   
 
         public AccountController(UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,   
-            ILogger<AccountController> logger,ApplicationDbContext context, IMapper mapper
+            ILogger<AccountController> logger,ApplicationDbContext context, IMapper mapper, ITaskRepository taskRepository
             )
         {
             _userManager = userManager;
@@ -40,6 +42,7 @@ namespace ProjectManagementSystem.Controllers
             _logger = logger;
             _context = context;
             _mapper = mapper;
+            _taskRepository = taskRepository;
 
 
         }
@@ -137,7 +140,6 @@ namespace ProjectManagementSystem.Controllers
                 var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, lockoutOnFailure: false);
                
                 
-               // Console.WriteLine(user.FullName);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
@@ -251,10 +253,10 @@ namespace ProjectManagementSystem.Controllers
             var us = _userManager.FindByIdAsync(user.Id).Result;
             var oldRoleId = _context.UserRoles.FirstOrDefault(r => r.UserId == us.Id)?.RoleId;
             var oldRole = _context.Roles.FirstOrDefault(r => r.Id == oldRoleId)?.Name;
-            
+            _taskRepository.UnAssignTasks(user.Id);
            _userManager.DeleteAsync(us);
            _userManager.RemoveFromRoleAsync(user, oldRole);
-           return RedirectToAction("Index","Home");
+           return RedirectToAction("Users");
         }
 
         public void AddRolesToRegisterViewModel()

@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 using ProjectManagementSystem.Models;
 
 namespace ProjectManagementSystem.Helpers.UserHelper
@@ -9,7 +11,9 @@ namespace ProjectManagementSystem.Helpers.UserHelper
         public string GetLoggedInUserRole();
         public IEnumerable<ApplicationUser> GetAllProjectManagers();
         public IEnumerable<ApplicationUser> GetAllDevelopers();
-       
-        
+
+      
+
+
     }
 }

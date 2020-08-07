@@ -20,6 +20,7 @@
             @Html.HiddenFor(m => m.ProjectCode)
 
             var loggedInUserRole = UserManager.FindByIdAsync(UserManager.GetUserId(HttpContextAccessor.HttpContext.User)).Result.RoleName;
+            var loggedInUser = UserManager.FindByIdAsync(UserManager.GetUserId(HttpContextAccessor.HttpContext.User)).Result;
 
             @if (loggedInUserRole == "Administrator" || loggedInUserRole == "ProjectManager")
             {
@@ -93,6 +94,22 @@
                     <textarea asp-for="Description" class="form-control"></textarea>
                     <span asp-validation-for="Description" class="text-danger"></span>
                 </div>
+                
+                <select asp-for="AssigneeId" asp-items="@TaskViewModel.Developers.Where(d => d.Value == loggedInUser.Id)">
+                    @if (@Model.Assignee != null)
+                    {
+                        <option selected value=@Model.AssigneeId>
+                            @Model.Assignee.FullName
+                        </option>
+                    }
+                    @if (Model.Assignee == null)
+                    {
+                        <option selected value="">
+                            Please select assignee
+                        </option>
+                    }
+
+                </select>
             }
 
             <div class="form-group">

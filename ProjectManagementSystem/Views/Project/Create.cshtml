@@ -9,12 +9,23 @@
 ViewData["Title"] = "Create Project";
 }
 @{ var loggedInUserRole = UserManager.FindByIdAsync(UserManager.GetUserId(HttpContextAccessor.HttpContext.User)).Result.RoleName;}
+@{ var loggedInUser = UserManager.FindByIdAsync(UserManager.GetUserId(HttpContextAccessor.HttpContext.User)).Result;}
+
 <div class="d-flex flex-column align-items-center mt-5">
     <h2>@ViewData["Title"]</h2>
     <div class="col-md-4">
         <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
+            
+            @if (loggedInUserRole == "ProjectManager")
+            {
+                <div class="invisible">
+                    @(@Model.ProjectManagerId = loggedInUser.Id)
+                </div>
+                @Html.HiddenFor(p => p.ProjectManagerId)
+            }
+            
             <hr/>
-          
+
             <div class="form-group">
                 <label asp-for="ProjectName"></label>
                 <input asp-for="ProjectName" class="form-control"/>
@@ -22,13 +33,13 @@ ViewData["Title"] = "Create Project";
             </div>
             @if (loggedInUserRole == "Administrator")
             {
-                
+
                 <div class="form-group">
                     <label class="mr-4">Project Manager:</label>
                     <select asp-for="ProjectManagerId" asp-items="@ProjectViewModel.ProjectManagers">
                         <option value="">Please select project manager</option>
                     </select>
-                      <span asp-validation-for="ProjectManagerId" class="text-danger"></span>
+                    <span asp-validation-for="ProjectManagerId" class="text-danger"></span>
                 </div>
             }
             <button type="submit" class="btn btn-primary mr-3">Create</button>

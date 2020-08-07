@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using ProjectManagementSystem.Models;
 using ProjectManagementSystem.ProjectManagementSystemDatabase.Context;
+using ProjectManagementSystem.Repositories;
 
 
 namespace ProjectManagementSystem.Helpers.UserHelper
@@ -13,13 +14,17 @@ namespace ProjectManagementSystem.Helpers.UserHelper
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        private readonly ApplicationDbContext _context;
-        
-        public UserHelper(UserManager<ApplicationUser> userManager, IHttpContextAccessor httpContextAccessor,  ApplicationDbContext context)
+        private readonly IUserRepository _userRepository;
+        public UserHelper(IUserRepository userRepository)
+        {
+            _userRepository = userRepository;
+        }
+
+        public UserHelper(UserManager<ApplicationUser> userManager, IHttpContextAccessor httpContextAccessor,  IUserRepository userRepository)
         {
             _userManager = userManager;
             _httpContextAccessor = httpContextAccessor;
-            _context = context;
+            _userRepository = userRepository;
         }
 
         enum Role
@@ -47,15 +52,17 @@ namespace ProjectManagementSystem.Helpers.UserHelper
         {
           
             
-                return  _context.Users.Where(u => u.RoleName.Equals(Role.ProjectManager.ToString()));;
+                return  _userRepository.GetAllQueryable().Where(u => u.RoleName.Equals(Role.ProjectManager.ToString()));;
 
         }
 
         public IEnumerable<ApplicationUser> GetAllDevelopers()
         {
             
-                return _context.Users.Where(u => u.RoleName.Equals(Role.Developer.ToString()));
+                return _userRepository.GetAllQueryable().Where(u => u.RoleName.Equals(Role.Developer.ToString()));
             
         }
+
+       
     }
 }

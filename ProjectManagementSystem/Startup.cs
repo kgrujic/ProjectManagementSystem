@@ -47,6 +47,7 @@ namespace ProjectManagementSystem
             
             services.AddScoped<IProjectRepository, ProjectRepository>();
             services.AddScoped<ITaskRepository, TaskRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserHelper, UserHelper>();
             
             services.AddAutoMapper(typeof(Startup));

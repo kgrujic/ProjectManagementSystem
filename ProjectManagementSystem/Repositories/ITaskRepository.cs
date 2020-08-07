@@ -10,7 +10,8 @@ namespace ProjectManagementSystem.Repositories
         Task GetTaskById(int id);  
         void CreateTask(Task task);  
         void UpdateTask(Task task);  
-        void DeleteTask(int id);  
-       
+        void DeleteTask(int id);
+        public void UnAssignTasks(string usId);
+
     }
 }

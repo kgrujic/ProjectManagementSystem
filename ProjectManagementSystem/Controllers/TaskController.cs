@@ -176,6 +176,8 @@ namespace ProjectManagementSystem.Controllers
                 
             }
             
+            
+            
             TaskViewModel.Statuses = new List<SelectListItem>
             {
                 new SelectListItem{Text = "New", Value = Status.New.ToString()},

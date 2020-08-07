@@ -18,18 +18,27 @@ namespace ProjectManagementSystem.Repositories
 
         public IEnumerable<Task> GetTasks(int projectId)
         {
-            var list = _context.Tasks.Include(t => t.Assignee).Include(t => t.Project).Where(t => t.ProjectCode == projectId).ToList();
-            if (!list.Any())
-            {
-                Console.WriteLine("not empty");
-            }
+            var list = _context.Tasks.Include(t => t.Assignee).Include(t => t.Project)
+                .Where(t => t.ProjectCode == projectId).ToList();
 
             return list;
-        }  
-        
+        }
+
+        public void UnAssignTasks(string usId)
+        {
+            var list = _context.Tasks.Include(t => t.Assignee).Include(t => t.Project).Where(t => t.AssigneeId == usId)
+                .ToList();
+            
+            foreach (var t in list)
+            {
+                t.Assignee = null;
+            }
+        }
+
         public IEnumerable<Task> GetTasksForUser(string userId, int prId)
         {
-            return _context.Tasks.Include(t => t.Assignee).Include(t => t.Project).Where(t => (t.AssigneeId == userId|| t.AssigneeId == null)  && t.ProjectCode == prId).ToList();
+            return _context.Tasks.Include(t => t.Assignee).Include(t => t.Project).Where(t =>
+                (t.AssigneeId == userId || t.AssigneeId == null) && t.ProjectCode == prId).ToList();
         }
 
         public Task GetTaskById(int id)
@@ -39,7 +48,6 @@ namespace ProjectManagementSystem.Repositories
 
         public void CreateTask(Task task)
         {
-           
             _context.Tasks.Add(task);
             _context.SaveChanges();
         }
@@ -47,7 +55,7 @@ namespace ProjectManagementSystem.Repositories
         public void UpdateTask(Task task)
         {
             _context.Tasks.Update(task);
-            _context.SaveChanges(); 
+            _context.SaveChanges();
         }
 
         public void DeleteTask(int id)
